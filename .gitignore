@@ -1,0 +1,45 @@
+# Root
+.env
+*.env
+__pycache__/
+*.py[cod]
+*.log
+*.sqlite3
+*.db
+
+# Python / FastAPI backend
+backend/__pycache__/
+backend/*.pyc
+backend/.pytest_cache/
+backend/.mypy_cache/
+backend/.DS_Store
+
+# Pipenv
+Pipfile.lock
+
+# Virtualenv
+venv/
+env/
+
+# Alembic (optional if using DB)
+migrations/versions/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.DS_Store
+frontend/.vite/
+frontend/.eslintcache
+
+# OS / Editor junk
+.DS_Store
+*.swp
+*.swo
+*.bak
+.idea/
+.vscode/
+node_modules/
+
+# Docker
+*.pid
+docker-compose.override.yml
