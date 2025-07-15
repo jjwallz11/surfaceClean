@@ -88,11 +88,5 @@ This template is ideal for:
 📜 License
 
 MIT License — free to use, modify, and adapt.
-# webpageTemp
-# webpageTemp
-# webTemp
-# webTemp
-# webTemp
-# webTemp
-# webTemp
+
 # surfaceClean

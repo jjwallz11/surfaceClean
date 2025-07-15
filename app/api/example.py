@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from templateBack.schemas.example import ExampleSchema
+from app.schemas.example import ExampleSchema
 
 router = APIRouter()
 
