@@ -1,19 +1,29 @@
-import os
+# app/config.py
+
+from pydantic_settings import BaseSettings
+from pydantic import ConfigDict
+from pathlib import Path
 from dotenv import load_dotenv
+import os
 
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
-load_dotenv(dotenv_path)
+# Detect environment
+ENV = os.getenv("ENVIRONMENT", "development")
+ENV_FILE = BASE_DIR / f".env.{ENV}" if ENV != "development" else BASE_DIR / ".env"
 
+# ✅ Explicitly load the .env file before Pydantic initializes
+load_dotenv(dotenv_path=ENV_FILE)
 
-class Settings:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'changeme'
-    ALGORITHM = os.environ.get('ALGORITHM') or 'HS256'
-    ACCESS_TOKEN_EXPIRE_MINUTES = int(os.environ.get('ACCESS_TOKEN_EXPIRE_MINUTES') or 30)
-    FLASK_RUN_PORT = os.environ.get('FLASK_RUN_PORT') or 5000
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_DATABASE_URI = (
-        os.environ.get('DATABASE_URL', '').replace('postgres://', 'postgresql://')
-        if os.environ.get('DATABASE_URL') else 'sqlite:///./test.db'
-    )
-    SQLALCHEMY_ECHO = True
+class Settings(BaseSettings):
+    DATABASE_URL: str
+    SECRET_KEY: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 720
+    ALGORITHM: str = "HS256"
+    DEBUG: bool = ENV == "development"
+    ENVIRONMENT: str = ENV
+    SCHEMA: str = "public"
+
+    model_config = ConfigDict(extra="allow")  # ENV loading handled above
+
+settings = Settings()
