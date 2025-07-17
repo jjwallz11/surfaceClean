@@ -23,7 +23,12 @@ class Settings(BaseSettings):
     DEBUG: bool = ENV == "development"
     ENVIRONMENT: str = ENV
     SCHEMA: str = "public"
+    SQLALCHEMY_ECHO: bool = DEBUG
 
     model_config = ConfigDict(extra="allow")  # ENV loading handled above
+
+    @property
+    def SQLALCHEMY_DATABASE_URI(self):
+        return self.DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://")
 
 settings = Settings()

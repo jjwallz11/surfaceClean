@@ -1,9 +1,9 @@
 # seeds/faqs.py
 
 from app.models import FAQ
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
 
-async def seed_faqs(session: AsyncSession):
+def seed_faqs(db: Session):
     faqs = [
         FAQ(
             question="How long does shipping take?",
@@ -19,5 +19,7 @@ async def seed_faqs(session: AsyncSession):
         )
     ]
 
-    session.add_all(faqs)
-    await session.commit()
+    db.add_all(faqs)
+
+def undo_faqs(db: Session):
+    db.query(FAQ).delete()

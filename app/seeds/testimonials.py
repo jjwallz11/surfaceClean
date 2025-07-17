@@ -1,7 +1,6 @@
 # seeds/testimonials.py
 
 from app.models import Testimonial
-from app.db import get_db
 from sqlalchemy.orm import Session
 
 def seed_testimonials(db: Session):
@@ -39,4 +38,6 @@ def seed_testimonials(db: Session):
     ]
 
     db.add_all(testimonials)
-    db.commit()
+
+def undo_testimonials(db: Session):
+    db.query(Testimonial).delete()

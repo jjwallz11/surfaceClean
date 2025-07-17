@@ -1,7 +1,6 @@
 # seeds/parts.py
 
 from app.models import Part
-from app.db import get_db
 from sqlalchemy.orm import Session
 
 def seed_parts(db: Session):
@@ -19,4 +18,6 @@ def seed_parts(db: Session):
     ]
 
     db.add_all(parts)
-    db.commit()
+
+def undo_parts(db: Session):
+    db.query(Part).delete()

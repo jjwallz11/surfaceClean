@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
 from app.config import Settings
+from passlib.context import CryptContext
 
 settings = Settings()
 
@@ -18,3 +19,9 @@ def verify_access_token(token: str):
         return payload
     except JWTError:
         return None
+    
+    
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+def get_password_hash(password: str) -> str:
+    return pwd_context.hash(password)

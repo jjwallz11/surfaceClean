@@ -1,9 +1,7 @@
-# seeds/images.py
-
 from app.models import Image
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
 
-async def seed_images(session: AsyncSession):
+def seed_images(db: Session):
     images = [
         Image(
             url="https://example.com/machine1_img1.jpg",
@@ -19,5 +17,7 @@ async def seed_images(session: AsyncSession):
         )
     ]
 
-    session.add_all(images)
-    await session.commit()
+    db.add_all(images)
+
+def undo_images(db: Session):
+    db.query(Image).delete()

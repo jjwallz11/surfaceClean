@@ -1,9 +1,9 @@
 # seeds/users.py
 
 from app.models import User
-from app.db import get_db
+from app.dependencies.db import get_db
 from sqlalchemy.orm import Session
-from utils.auth import get_password_hash 
+from app.utils.auth import get_password_hash
 
 def seed_users(db: Session):
     users = [
@@ -22,4 +22,6 @@ def seed_users(db: Session):
     ]
 
     db.add_all(users)
-    db.commit()
+
+def undo_users(db: Session):
+    db.query(User).delete()

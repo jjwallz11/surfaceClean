@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, ForeignKey, Text
 from sqlalchemy.orm import relationship
-from app.db import Base
+from app.models.db import Base
 
 class Machine(Base):
     __tablename__ = "machines"
@@ -12,5 +12,4 @@ class Machine(Base):
     price = Column(Float, nullable=False)
     owner_id = Column(Integer, ForeignKey("users.id"))
 
-    owner = relationship("User", back_populates="machines")
     images = relationship("Image", back_populates="machine")
