@@ -1,14 +1,13 @@
 import os
 
-
-class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY')
-    FLASK_RUN_PORT = os.environ.get('FLASK_RUN_PORT')
+class Settings:
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'changeme'
+    ALGORITHM = os.environ.get('ALGORITHM') or 'HS256'
+    ACCESS_TOKEN_EXPIRE_MINUTES = int(os.environ.get('ACCESS_TOKEN_EXPIRE_MINUTES') or 30)
+    FLASK_RUN_PORT = os.environ.get('FLASK_RUN_PORT') or 5000
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    # SQLAlchemy 1.4 no longer supports url strings that start with 'postgres'
-    # (only 'postgresql') but heroku's postgres add-on automatically sets the
-    # url in the hidden config vars to start with postgres.
-    # so the connection uri must be updated here (for production)
-    SQLALCHEMY_DATABASE_URI = os.environ.get(
-        'DATABASE_URL').replace('postgres://', 'postgresql://')
+    SQLALCHEMY_DATABASE_URI = (
+        os.environ.get('DATABASE_URL', '').replace('postgres://', 'postgresql://')
+        if os.environ.get('DATABASE_URL') else 'sqlite:///./test.db'
+    )
     SQLALCHEMY_ECHO = True
