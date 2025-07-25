@@ -1,3 +1,5 @@
+# app/api/auth_routes.py
+
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from utils.auth import create_access_token

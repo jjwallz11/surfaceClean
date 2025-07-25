@@ -2,8 +2,8 @@
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from app.config import settings
-from app.seeds import (
+from config import settings
+from seeds import (
     seed_users, undo_users,
     seed_machines, undo_machines,
     seed_parts, undo_parts,
@@ -11,7 +11,7 @@ from app.seeds import (
     seed_faqs, undo_faqs,
     seed_testimonials, undo_testimonials
 )
-from app.models.db import Base
+from models.db import Base
 
 print("🌱 Seeding database...")
 
@@ -30,14 +30,14 @@ def run_seeds():
     undo_testimonials(session)
     undo_faqs(session)
     undo_images(session)
-    undo_parts(session)
+    # undo_parts(session)
     undo_machines(session)
     undo_users(session)
 
     # Seed in forward order
     seed_users(session)
     seed_machines(session)
-    seed_parts(session)
+    # seed_parts(session)
     seed_images(session)
     seed_faqs(session)
     seed_testimonials(session)

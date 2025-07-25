@@ -1,6 +1,8 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, Text
+# app/models/machines.py
+
+from sqlalchemy import Column, Integer, String, Float, Numeric, Text
 from sqlalchemy.orm import relationship
-from app.models.db import Base
+from models.db import Base
 
 class Machine(Base):
     __tablename__ = "machines"
@@ -8,8 +10,7 @@ class Machine(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
     description = Column(Text)
-    specifications = Column(Text)
     price = Column(Float, nullable=False)
-    owner_id = Column(Integer, ForeignKey("users.id"))
+    hours_used = Column(Numeric(10,2), nullable=True)
 
     images = relationship("Image", back_populates="machine")

@@ -1,10 +1,12 @@
+# app/api/machines_routes.py
+
 from fastapi import APIRouter, Depends, HTTPException, Path
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from app.dependencies.db import get_session
-from app.dependencies.auth import get_current_user
-from app.models.machines import Machine
-from app.schemas.machines import MachineCreate, MachineUpdate
+from dependencies.db import get_session
+from dependencies.auth import get_current_user
+from models.machines import Machine
+from schemas.machines import MachineCreate, MachineUpdate
 
 router = APIRouter()
 

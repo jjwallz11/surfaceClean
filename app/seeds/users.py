@@ -1,9 +1,9 @@
-# seeds/users.py
+# app/seeds/users.py
 
-from app.models import User
-from app.dependencies.db import get_db
+from models import User
+from dependencies.db import get_db
 from sqlalchemy.orm import Session
-from app.utils.auth import get_password_hash
+from utils.auth import get_password_hash
 
 def seed_users(db: Session):
     users = [
@@ -14,7 +14,7 @@ def seed_users(db: Session):
             hashed_password=get_password_hash("BAtFitFMA13#*")
         ),
         User(
-            email="dave@dave.com",
+            email="surfaceclean111@yahoo.com",
             first_name="Dave",
             last_name="Siano",
             hashed_password=get_password_hash("password")

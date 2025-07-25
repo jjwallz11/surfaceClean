@@ -1,7 +1,9 @@
+# app/utils/auth.py
+
 from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
-from app.config import Settings
+from config import Settings
 from passlib.context import CryptContext
 
 settings = Settings()

@@ -1,3 +1,5 @@
+# app/api/__init__.py
+
 from .auth_routes import router as auth_router
 from .users_routes import router as users_router
 from .machines_routes import router as machines_router

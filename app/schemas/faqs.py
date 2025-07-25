@@ -1,13 +1,19 @@
-# app/schemas/faq.py
-from pydantic import BaseModel
+# app/schemas/faqs.py
 
+from pydantic import BaseModel
+from typing import Optional
+
+# Optional base (used for updates)
 class FAQBase(BaseModel):
+    question: Optional[str] = None
+    answer: Optional[str] = None
+
+# Required for creation
+class FAQCreate(BaseModel):
     question: str
     answer: str
 
-class FAQCreate(FAQBase):
-    pass
-
+# Output
 class FAQOut(FAQBase):
     id: int
 

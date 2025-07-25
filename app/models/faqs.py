@@ -1,5 +1,7 @@
+# app/models/faqs.py
+
 from sqlalchemy import Column, Integer, String, Text
-from app.models.db import Base
+from models.db import Base
 
 class FAQ(Base):
     __tablename__ = "faqs"
