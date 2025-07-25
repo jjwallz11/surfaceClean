@@ -8,11 +8,11 @@ __pycache__/
 *.db
 
 # Python / FastAPI backend
-backend/__pycache__/
-backend/*.pyc
-backend/.pytest_cache/
-backend/.mypy_cache/
-backend/.DS_Store
+app/__pycache__/
+app/*.pyc
+app/.pytest_cache/
+app/.mypy_cache/
+app/.DS_Store
 
 # Pipenv
 Pipfile.lock
@@ -20,16 +20,18 @@ Pipfile.lock
 # Virtualenv
 venv/
 env/
+.venv/
+.venv
 
 # Alembic (optional if using DB)
 migrations/versions/
 
 # Frontend
-frontend/node_modules/
-frontend/dist/
-frontend/.DS_Store
-frontend/.vite/
-frontend/.eslintcache
+front/node_modules/
+front/dist/
+front/.DS_Store
+front/.vite/
+front/.eslintcache
 
 # OS / Editor junk
 .DS_Store
