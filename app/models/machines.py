@@ -2,7 +2,7 @@
 
 from sqlalchemy import Column, Integer, String, Float, Numeric, Text
 from sqlalchemy.orm import relationship
-from models.db import Base
+from app.models.db import Base
 
 class Machine(Base):
     __tablename__ = "machines"

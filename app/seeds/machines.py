@@ -1,6 +1,6 @@
 # app/seeds/machines.py
 
-from models import Machine
+from app.models import Machine
 from sqlalchemy.orm import Session
 from decimal import Decimal
 

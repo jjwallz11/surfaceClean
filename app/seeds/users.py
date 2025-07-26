@@ -1,9 +1,8 @@
 # app/seeds/users.py
 
-from models import User
-from dependencies.db import get_db
+from app.models import User
 from sqlalchemy.orm import Session
-from utils.auth import get_password_hash
+from app.utils.auth import get_password_hash
 
 def seed_users(db: Session):
     users = [

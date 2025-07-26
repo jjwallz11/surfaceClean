@@ -1,6 +1,6 @@
 # app/seeds/testimonials.py
 
-from models import Testimonial
+from app.models import Testimonial
 from sqlalchemy.orm import Session
 
 def seed_testimonials(db: Session):

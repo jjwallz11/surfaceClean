@@ -1,6 +1,6 @@
 # app/seeds/images.py
 
-from models import Image
+from app.models import Image
 from sqlalchemy.orm import Session
 
 def seed_images(db: Session):

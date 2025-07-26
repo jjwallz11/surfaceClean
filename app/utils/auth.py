@@ -3,7 +3,7 @@
 from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
-from config import Settings
+from app.config import Settings
 from passlib.context import CryptContext
 
 settings = Settings()

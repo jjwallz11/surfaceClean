@@ -1,6 +1,6 @@
 # app/seeds/faqs.py
 
-from models import FAQ
+from app.models import FAQ
 from sqlalchemy.orm import Session
 
 def seed_faqs(db: Session):

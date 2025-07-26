@@ -1,6 +1,6 @@
 # app/seeds/parts.py
 
-from models import Part
+from app.models import Part
 from sqlalchemy.orm import Session
 
 def seed_parts(db: Session):

@@ -1,9 +1,19 @@
 # app/scripts/seed.py
+import sys
+from pathlib import Path
+import os
+
+# Ensure project root is in sys.path
+project_root = Path(__file__).resolve().parent.parent.parent
+sys.path.append(str(project_root))
+
+# Set environment variable to use sync database for seeding
+os.environ['USE_SYNC_DB'] = 'true'
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from config import settings
-from seeds import (
+from app.config import settings
+from app.seeds import (
     seed_users, undo_users,
     seed_machines, undo_machines,
     seed_parts, undo_parts,
@@ -11,7 +21,7 @@ from seeds import (
     seed_faqs, undo_faqs,
     seed_testimonials, undo_testimonials
 )
-from models.db import Base
+from app.models.db import Base
 
 print("🌱 Seeding database...")
 
