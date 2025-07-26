@@ -3,16 +3,16 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from dependencies.db import get_session
-from dependencies.auth import get_current_user
-from models.testimonials import Testimonial
-from schemas.testimonials import TestimonialCreate, TestimonialUpdate
+from app.dependencies.db import get_db
+from app.dependencies.auth import get_current_user
+from app.models.testimonials import Testimonial
+from app.schemas.testimonials import TestimonialCreate, TestimonialUpdate
 
 router = APIRouter()
 
 # READ
 @router.get("/")
-async def get_testimonials(session: AsyncSession = Depends(get_session)):
+async def get_testimonials(session: AsyncSession = Depends(get_db)):
     result = await session.execute(select(Testimonial))
     return result.scalars().all()
 
@@ -20,7 +20,7 @@ async def get_testimonials(session: AsyncSession = Depends(get_session)):
 @router.post("/")
 async def create_testimonial(
     data: TestimonialCreate,
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_db),
     user=Depends(get_current_user)
 ):
     testimonial = Testimonial(**data.dict())
@@ -34,7 +34,7 @@ async def create_testimonial(
 async def update_testimonial(
     testimonial_id: int,
     data: TestimonialUpdate,
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_db),
     user=Depends(get_current_user)
 ):
     testimonial = await session.get(Testimonial, testimonial_id)
@@ -52,7 +52,7 @@ async def update_testimonial(
 @router.delete("/{testimonial_id}")
 async def delete_testimonial(
     testimonial_id: int,
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_db),
     user=Depends(get_current_user)
 ):
     testimonial = await session.get(Testimonial, testimonial_id)

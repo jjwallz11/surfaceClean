@@ -3,16 +3,16 @@
 from fastapi import APIRouter, Depends, HTTPException, Path
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from dependencies.db import get_session
-from dependencies.auth import get_current_user
-from models.machines import Machine
-from schemas.machines import MachineCreate, MachineUpdate
+from app.dependencies.db import get_db
+from app.dependencies.auth import get_current_user
+from app.models.machines import Machine
+from app.schemas.machines import MachineCreate, MachineUpdate
 
 router = APIRouter()
 
 # READ
 @router.get("/")
-async def get_machines(session: AsyncSession = Depends(get_session)):
+async def get_machines(session: AsyncSession = Depends(get_db)):
     result = await session.execute(select(Machine))
     return result.scalars().all()
 
@@ -20,7 +20,7 @@ async def get_machines(session: AsyncSession = Depends(get_session)):
 @router.post("/")
 async def create_machine(
     data: MachineCreate,
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_db),
     user=Depends(get_current_user)
 ):
     machine = Machine(**data.dict())
@@ -34,7 +34,7 @@ async def create_machine(
 async def update_machine(
     machine_id: int = Path(..., gt=0),
     data: MachineUpdate = Depends(),
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_db),
     user=Depends(get_current_user)
 ):
     machine = await session.get(Machine, machine_id)
@@ -52,7 +52,7 @@ async def update_machine(
 @router.delete("/{machine_id}")
 async def delete_machine(
     machine_id: int,
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_db),
     user=Depends(get_current_user)
 ):
     machine = await session.get(Machine, machine_id)

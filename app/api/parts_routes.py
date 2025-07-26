@@ -3,16 +3,16 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from dependencies.db import get_session
-from dependencies.auth import get_current_user
-from models.parts import Part
-from schemas.parts import PartCreate, PartUpdate
+from app.dependencies.db import get_db
+from app.dependencies.auth import get_current_user
+from app.models.parts import Part
+from app.schemas.parts import PartCreate, PartUpdate
 
 router = APIRouter()
 
 # READ
 @router.get("/")
-async def get_parts(session: AsyncSession = Depends(get_session)):
+async def get_parts(session: AsyncSession = Depends(get_db)):
     result = await session.execute(select(Part))
     return result.scalars().all()
 
@@ -20,7 +20,7 @@ async def get_parts(session: AsyncSession = Depends(get_session)):
 @router.post("/")
 async def create_part(
     data: PartCreate,
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_db),
     user=Depends(get_current_user)
 ):
     part = Part(**data.dict())
@@ -34,7 +34,7 @@ async def create_part(
 async def update_part(
     part_id: int,
     data: PartUpdate,
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_db),
     user=Depends(get_current_user)
 ):
     part = await session.get(Part, part_id)
@@ -52,7 +52,7 @@ async def update_part(
 @router.delete("/{part_id}")
 async def delete_part(
     part_id: int,
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_db),
     user=Depends(get_current_user)
 ):
     part = await session.get(Part, part_id)

@@ -15,7 +15,11 @@ class ImageCreate(ImageBase):
         if bool(self.machine_id) == bool(self.part_id):
             raise ValueError("Exactly one of machine_id or part_id must be provided.")
         return self
-
+    
+class ImageUpdate(BaseModel):
+    url: Optional[str]
+    caption: Optional[str]
+    
 class ImageOut(ImageBase):
     id: int
 

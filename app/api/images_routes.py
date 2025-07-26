@@ -3,16 +3,16 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from dependencies.db import get_session
-from dependencies.auth import get_current_user
-from models.images import Image
-from schemas.images import ImageCreate, ImageUpdate
+from app.dependencies.db import get_db
+from app.dependencies.auth import get_current_user
+from app.models.images import Image
+from app.schemas.images import ImageCreate, ImageUpdate
 
 router = APIRouter()
 
 # READ all
 @router.get("/")
-async def get_images(session: AsyncSession = Depends(get_session)):
+async def get_images(session: AsyncSession = Depends(get_db)):
     result = await session.execute(select(Image))
     return result.scalars().all()
 
@@ -20,7 +20,7 @@ async def get_images(session: AsyncSession = Depends(get_session)):
 @router.post("/")
 async def create_image(
     data: ImageCreate,
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_db),
     user=Depends(get_current_user)
 ):
     image = Image(**data.dict())
@@ -34,7 +34,7 @@ async def create_image(
 async def update_image(
     image_id: int,
     data: ImageUpdate,
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_db),
     user=Depends(get_current_user)
 ):
     image = await session.get(Image, image_id)
@@ -52,7 +52,7 @@ async def update_image(
 @router.delete("/{image_id}")
 async def delete_image(
     image_id: int,
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_db),
     user=Depends(get_current_user)
 ):
     image = await session.get(Image, image_id)

@@ -2,11 +2,11 @@
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from dependencies.auth import get_current_user
-from dependencies.db import get_session
-from models.users import User
-from schemas.users import UserOut, PasswordUpdate
-from utils.auth import get_password_hash
+from app.dependencies.auth import get_current_user
+from app.dependencies.db import get_db
+from app.models.users import User
+from app.schemas.users import UserOut, PasswordUpdate
+from app.utils.auth import get_password_hash
 
 router = APIRouter()
 
@@ -20,7 +20,7 @@ async def read_current_user(current_user: User = Depends(get_current_user)):
 async def update_password(
     data: PasswordUpdate,
     current_user: User = Depends(get_current_user),
-    session: AsyncSession = Depends(get_session)
+    session: AsyncSession = Depends(get_db)
 ):
     if data.new_password != data.confirm_password:
         raise HTTPException(

@@ -3,22 +3,22 @@
 from fastapi import APIRouter, Depends, HTTPException, Path
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from dependencies.db import get_session
-from dependencies.auth import get_current_user
-from models.faqs import FAQ
-from schemas.faqs import FAQCreate, FAQUpdate
+from app.dependencies.db import get_db
+from app.dependencies.auth import get_current_user
+from app.models.faqs import FAQ
+from app.schemas.faqs import FAQCreate, FAQUpdate
 
 router = APIRouter()
 
 # READ
 @router.get("/")
-async def get_faqs(session: AsyncSession = Depends(get_session)):
+async def get_faqs(session: AsyncSession = Depends(get_db)):
     result = await session.execute(select(FAQ))
     return result.scalars().all()
 
 # CREATE
 @router.post("/")
-async def create_faq(data: FAQCreate, session: AsyncSession = Depends(get_session), user=Depends(get_current_user)):
+async def create_faq(data: FAQCreate, session: AsyncSession = Depends(get_db), user=Depends(get_current_user)):
     faq = FAQ(**data.dict())
     session.add(faq)
     await session.commit()
@@ -30,7 +30,7 @@ async def create_faq(data: FAQCreate, session: AsyncSession = Depends(get_sessio
 async def update_faq(
     faq_id: int,
     data: FAQUpdate,
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_db),
     user=Depends(get_current_user)
 ):
     faq = await session.get(FAQ, faq_id)
@@ -48,7 +48,7 @@ async def update_faq(
 @router.delete("/{faq_id}")
 async def delete_faq(
     faq_id: int,
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_db),
     user=Depends(get_current_user)
 ):
     faq = await session.get(FAQ, faq_id)
