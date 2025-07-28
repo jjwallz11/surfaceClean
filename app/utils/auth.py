@@ -1,6 +1,6 @@
 # app/utils/auth.py
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 from jose import JWTError, jwt
 from app.config import Settings
@@ -10,7 +10,7 @@ settings = Settings()
 
 def create_access_token(data: dict, expires_delta: Optional[int] = None):
     to_encode = data.copy()
-    expire = datetime.datetime.now(datetime.UTC) + timedelta(minutes=expires_delta or settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    expire = datetime.now(timezone.utc) + timedelta(minutes=expires_delta or settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
     return encoded_jwt
