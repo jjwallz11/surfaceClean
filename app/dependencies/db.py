@@ -4,9 +4,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from app.config import settings
 
-DATABASE_URL = settings.SQLALCHEMY_DATABASE_URI.replace("postgresql://", "postgresql+asyncpg://")
+DATABASE_URL = settings.DATABASE_URL
 
-engine = create_engine(settings.DATABASE_URL, echo=settings.SQLALCHEMY_ECHO, future=True)
+engine = create_engine(DATABASE_URL, echo=settings.SQLALCHEMY_ECHO, future=True)
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 
 def get_db():

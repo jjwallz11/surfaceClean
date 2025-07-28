@@ -17,7 +17,7 @@ class UserOut(UserBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 # Password update schema
 class PasswordUpdate(BaseModel):

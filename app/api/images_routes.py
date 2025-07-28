@@ -1,8 +1,8 @@
 # app/api/images_routes.py
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
+from sqlalchemy.orm import Session
+from sqlalchemy import select
 from app.dependencies.db import get_db
 from app.dependencies.auth import get_current_user
 from app.models.images import Image
@@ -12,53 +12,53 @@ router = APIRouter()
 
 # READ all
 @router.get("/")
-async def get_images(session: AsyncSession = Depends(get_db)):
-    result = await session.execute(select(Image))
+def get_images(session: Session = Depends(get_db)):
+    result = session.execute(select(Image))
     return result.scalars().all()
 
 # CREATE
 @router.post("/")
-async def create_image(
+def create_image(
     data: ImageCreate,
-    session: AsyncSession = Depends(get_db),
+    session: Session = Depends(get_db),
     user=Depends(get_current_user)
 ):
     image = Image(**data.dict())
     session.add(image)
-    await session.commit()
-    await session.refresh(image)
+    session.commit()
+    session.refresh(image)
     return image
 
 # UPDATE
 @router.patch("/{image_id}")
-async def update_image(
+def update_image(
     image_id: int,
     data: ImageUpdate,
-    session: AsyncSession = Depends(get_db),
+    session: Session = Depends(get_db),
     user=Depends(get_current_user)
 ):
-    image = await session.get(Image, image_id)
+    image = session.get(Image, image_id)
     if not image:
         raise HTTPException(status_code=404, detail="Image not found")
 
     for key, value in data.dict(exclude_unset=True).items():
         setattr(image, key, value)
 
-    await session.commit()
-    await session.refresh(image)
+    session.commit()
+    session.refresh(image)
     return image
 
 # DELETE
 @router.delete("/{image_id}")
-async def delete_image(
+def delete_image(
     image_id: int,
-    session: AsyncSession = Depends(get_db),
+    session: Session = Depends(get_db),
     user=Depends(get_current_user)
 ):
-    image = await session.get(Image, image_id)
+    image = session.get(Image, image_id)
     if not image:
         raise HTTPException(status_code=404, detail="Image not found")
 
-    await session.delete(image)
-    await session.commit()
+    session.delete(image)
+    session.commit()
     return {"message": "Image deleted"}

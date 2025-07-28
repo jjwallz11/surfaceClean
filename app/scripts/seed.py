@@ -1,15 +1,7 @@
 # app/scripts/seed.py
+
 import sys
 from pathlib import Path
-import os
-
-# Ensure project root is in sys.path
-project_root = Path(__file__).resolve().parent.parent.parent
-sys.path.append(str(project_root))
-
-# Set environment variable to use sync database for seeding
-os.environ['USE_SYNC_DB'] = 'true'
-
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from app.config import settings
@@ -23,16 +15,17 @@ from app.seeds import (
 )
 from app.models.db import Base
 
+# Ensure project root is in sys.path
+project_root = Path(__file__).resolve().parent.parent.parent
+sys.path.append(str(project_root))
+
 print("🌱 Seeding database...")
 
-# Convert async DB URL (if present) to sync for seeding
-sync_database_url = settings.DATABASE_URL.replace("sqlite+aiosqlite://", "sqlite://")
-engine = create_engine(sync_database_url, echo=True)
+engine = create_engine(settings.DATABASE_URL, echo=True)
 SessionLocal = sessionmaker(bind=engine)
 session = SessionLocal()
 
 def run_seeds():
-    # Ensure schema exists and fresh
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
 

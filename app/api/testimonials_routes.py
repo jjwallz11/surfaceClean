@@ -1,8 +1,8 @@
 # app/api/testimonials_routes.py
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
+from sqlalchemy.orm import Session
+from sqlalchemy import select
 from app.dependencies.db import get_db
 from app.dependencies.auth import get_current_user
 from app.models.testimonials import Testimonial
@@ -12,53 +12,53 @@ router = APIRouter()
 
 # READ
 @router.get("/")
-async def get_testimonials(session: AsyncSession = Depends(get_db)):
-    result = await session.execute(select(Testimonial))
+def get_testimonials(session: Session = Depends(get_db)):
+    result = session.execute(select(Testimonial))
     return result.scalars().all()
 
 # CREATE
 @router.post("/")
-async def create_testimonial(
+def create_testimonial(
     data: TestimonialCreate,
-    session: AsyncSession = Depends(get_db),
+    session: Session = Depends(get_db),
     user=Depends(get_current_user)
 ):
     testimonial = Testimonial(**data.dict())
     session.add(testimonial)
-    await session.commit()
-    await session.refresh(testimonial)
+    session.commit()
+    session.refresh(testimonial)
     return testimonial
 
 # UPDATE
 @router.patch("/{testimonial_id}")
-async def update_testimonial(
+def update_testimonial(
     testimonial_id: int,
     data: TestimonialUpdate,
-    session: AsyncSession = Depends(get_db),
+    session: Session = Depends(get_db),
     user=Depends(get_current_user)
 ):
-    testimonial = await session.get(Testimonial, testimonial_id)
+    testimonial = session.get(Testimonial, testimonial_id)
     if not testimonial:
         raise HTTPException(status_code=404, detail="Testimonial not found")
 
     for key, value in data.dict(exclude_unset=True).items():
         setattr(testimonial, key, value)
 
-    await session.commit()
-    await session.refresh(testimonial)
+    session.commit()
+    session.refresh(testimonial)
     return testimonial
 
 # DELETE
 @router.delete("/{testimonial_id}")
-async def delete_testimonial(
+def delete_testimonial(
     testimonial_id: int,
-    session: AsyncSession = Depends(get_db),
+    session: Session = Depends(get_db),
     user=Depends(get_current_user)
 ):
-    testimonial = await session.get(Testimonial, testimonial_id)
+    testimonial = session.get(Testimonial, testimonial_id)
     if not testimonial:
         raise HTTPException(status_code=404, detail="Testimonial not found")
 
-    await session.delete(testimonial)
-    await session.commit()
+    session.delete(testimonial)
+    session.commit()
     return {"message": "Testimonial deleted"}
