@@ -2,7 +2,7 @@
 
 from sqlalchemy import Column, Integer, String, Numeric, Text
 from sqlalchemy.orm import relationship
-from app.models.db import Base
+from utils.db import Base
 
 class Part(Base):
     __tablename__ = "parts"

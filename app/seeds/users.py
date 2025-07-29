@@ -1,26 +1,58 @@
 # app/seeds/users.py
 
-from app.models import User
-from sqlalchemy.orm import Session
-from app.utils.auth import get_password_hash
+import asyncio
+from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
+from utils.db import AsyncSessionLocal, Base, engine
+from models.users import User
+from utils.auth import hash_password
 
-def seed_users(db: Session):
-    users = [
-        User(
-            email="jjparedez3@gmail.com",
-            first_name="Johnny",
-            last_name="Paredez III",
-            hashed_password=get_password_hash("BAtFitFMA13#*")
-        ),
-        User(
-            email="surfaceclean111@yahoo.com",
-            first_name="Dave",
-            last_name="Siano",
-            hashed_password=get_password_hash("password")
-        ),
-    ]
+async def seed_users():
+    # Ensure schema exists
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
 
-    db.add_all(users)
+    async with AsyncSessionLocal() as db:
+        # Define users
+        seed_data = [
+            {
+                "email": "jjparedez3@gmail.com",
+                "first_name": "Johnny",
+                "last_name": "Paredez III",
+                "password": "BAtFitFMA13#*"
+            },
+            {
+                "email": "surfaceclean111@yahoo.com",
+                "first_name": "Dave",
+                "last_name": "Siano",
+                "password": "password"
+            }
+        ]
 
-def undo_users(db: Session):
-    db.query(User).delete()
+        result = await db.execute(select(User).where(User.email.in_([u["email"] for u in seed_data])))
+        existing_emails = {user.email for user in result.scalars().all()}
+
+        for user_data in seed_data:
+            if user_data["email"] not in existing_emails:
+                user = User(
+                    email=user_data["email"],
+                    first_name=user_data["first_name"],
+                    last_name=user_data["last_name"],
+                    password_hash=hash_password(user_data["password"]),
+                    role="admin" if "jjparedez" in user_data["email"] else "owner"
+                )
+                db.add(user)
+                print(f"✅ Created user: {user.email}")
+
+        await db.commit()
+
+async def undo_users():
+    async with AsyncSessionLocal() as db:
+        await db.execute(text("DELETE FROM users"))
+        await db.commit()
+        print("🗑️ Deleted all users")
+
+# Optional standalone runner
+if __name__ == "__main__":
+    asyncio.run(seed_users())

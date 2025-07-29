@@ -1,25 +1,30 @@
 # app/schemas/users.py
 
 from pydantic import BaseModel, EmailStr
+from typing import Optional
 
-# Base user model
 class UserBase(BaseModel):
     email: EmailStr
-    first_name: str
-    last_name: str
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    company: Optional[str] = None
+    phone: Optional[str] = None
+    role: str = "owner"
 
-# Creating a new user
 class UserCreate(UserBase):
-    password: str
+    password: str  # Plain text password (before hashing)
 
-# Returning user info
-class UserOut(UserBase):
+class UserUpdate(BaseModel):
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    company: Optional[str] = None
+    phone: Optional[str] = None
+    email: Optional[EmailStr] = None
+    password: Optional[str] = None
+
+class UserResponse(UserBase):
     id: int
 
-    class Config:
-        from_attributes = True
-
-# Password update schema
-class PasswordUpdate(BaseModel):
-    new_password: str
-    confirm_password: str
+    model_config = {
+        "from_attributes": True
+    }

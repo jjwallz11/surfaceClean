@@ -20,8 +20,10 @@ class ImageUpdate(BaseModel):
     url: Optional[str]
     caption: Optional[str]
     
-class ImageOut(ImageBase):
+class ImageResponse(ImageBase):
     id: int
 
     class Config:
-        from_attributes = True
+        model_config = {
+        "from_attributes": True
+    }

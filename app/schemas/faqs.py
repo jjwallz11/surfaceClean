@@ -14,8 +14,10 @@ class FAQUpdate(BaseModel):
     question: Optional[str] = None
     answer: Optional[str] = None
 
-class FAQOut(FAQBase):
+class FAQResponse(FAQBase):
     id: int
 
     class Config:
-        from_attributes = True
+         model_config = {
+        "from_attributes": True
+    }

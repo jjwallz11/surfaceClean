@@ -18,7 +18,7 @@ class TestimonialCreate(BaseModel):
 class TestimonialUpdate(TestimonialBase):
     pass
 
-class TestimonialOut(BaseModel):
+class TestimonialResponse(BaseModel):
     id: int
     author_name: str
     stars: int
@@ -26,4 +26,6 @@ class TestimonialOut(BaseModel):
     content: Optional[str] = None
 
     class Config:
-        from_attributes = True
+        model_config = {
+        "from_attributes": True
+    }

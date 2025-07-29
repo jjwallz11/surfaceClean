@@ -20,7 +20,7 @@ class MachineCreate(BaseModel):
 class MachineUpdate(MachineBase):
     pass
 
-class MachineOut(BaseModel):
+class MachineResponse(BaseModel):
     id: int
     name: str
     price: float
@@ -29,4 +29,6 @@ class MachineOut(BaseModel):
     images: Optional[List[int]] = []
 
     class Config:
-        from_attributes = True
+        model_config = {
+        "from_attributes": True
+    }

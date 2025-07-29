@@ -1,37 +1,48 @@
 # app/main.py
 
 from fastapi import FastAPI
+from routes import router
+from config import settings
+import logging
+from utils.db import engine, Base
 from fastapi.middleware.cors import CORSMiddleware
-from app.api import (
-    auth_router,
-    users_router,
-    machines_router,
-    parts_router,
-    images_router,
-    testimonials_router,
-    faqs_router
-)
 
-app = FastAPI()
+app = FastAPI(title="Surface Clean API", debug=settings.DEBUG)
 
-origins = ["http://localhost:5173"]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["http://localhost:2911"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Mount all routers
-app.include_router(auth_router, prefix="/api/auth")
-app.include_router(users_router, prefix="/api/users")
-app.include_router(machines_router, prefix="/api/machines")
-app.include_router(parts_router, prefix="/api/parts")
-app.include_router(images_router, prefix="/api/images")
-app.include_router(testimonials_router, prefix="/api/testimonials")
-app.include_router(faqs_router, prefix="/api/faqs")
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+)
+
+@app.on_event("startup")
+async def startup_event():
+    logging.info("Starting up the Surface Clean API")
+    if settings.ENVIRONMENT != "production":
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+        logging.info("✅ Async database tables created")
+    else:
+        logging.info("🚫 Production environment detected; skipping table creation")
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    logging.info("Shutting down the Surface Clean API")
+
+app.include_router(router)
 
 @app.get("/")
 def root():
-    return {"message": "API is running"}
+    return {"message": "Welcome to Surface Clean API"}
+
+if settings.ENVIRONMENT == "production":
+    origins = ["https://yourdomain.com"]
+else:
+    origins = ["*"]

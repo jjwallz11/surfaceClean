@@ -6,13 +6,3 @@ from .parts import Part
 from .images import Image
 from .testimonials import Testimonial
 from .faqs import FAQ
-from .db import Base
-
-__all__ = [
-    "User",
-    "Machine",
-    "Part",
-    "Image",
-    "Testimonial",
-    "FAQ",
-]

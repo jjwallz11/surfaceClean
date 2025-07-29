@@ -1,7 +1,7 @@
 # app/models/testimonials.py
 
 from sqlalchemy import Column, Integer, String, Text
-from app.models.db import Base
+from utils.db import Base
 
 class Testimonial(Base):
     __tablename__ = "testimonials"

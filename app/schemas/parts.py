@@ -19,7 +19,7 @@ class PartCreate(BaseModel):
 class PartUpdate(PartBase):
     pass
 
-class PartOut(BaseModel):
+class PartResponse(BaseModel):
     id: int
     name: str
     price: Decimal
@@ -27,4 +27,6 @@ class PartOut(BaseModel):
     quantity: int
 
     class Config:
-        from_attributes = True
+        model_config = {
+        "from_attributes": True
+    }

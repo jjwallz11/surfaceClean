@@ -2,7 +2,7 @@
 
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-from app.models.db import Base
+from utils.db import Base
 
 
 class Image(Base):

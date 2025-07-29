@@ -8,27 +8,29 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Detect environment
-ENV = os.getenv("ENVIRONMENT", "development")
-ENV_FILE = BASE_DIR / f".env.{ENV}" if ENV != "development" else BASE_DIR / ".env"
-
-# ✅ Explicitly load the .env file before Pydantic initializes
-load_dotenv(dotenv_path=ENV_FILE)
+# Load .env first
+load_dotenv(dotenv_path=BASE_DIR / ".env")
 
 class Settings(BaseSettings):
+    # === Server ===
+    PORT: int = 2911
+    HOST: str = "0.0.0.0"
+
+    # === JWT Auth ===
+    JWT_SECRET: str
+    JWT_ALGORITHM: str = "HS256"
+    JWT_EXPIRATION_MINUTES: int = 720
+
+    # === Database ===
     DATABASE_URL: str
-    SECRET_KEY: str
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 720
-    ALGORITHM: str = "HS256"
-    DEBUG: bool = ENV == "development"
-    ENVIRONMENT: str = ENV
     SCHEMA: str = "public"
-    SQLALCHEMY_ECHO: bool = DEBUG
 
-    model_config = ConfigDict(extra="allow")  # ENV loading handled above
+    # === Cloudinary ===
+    CLOUDINARY_CLOUD_NAME: str
+    CLOUDINARY_API_KEY: str
+    CLOUDINARY_API_SECRET: str
+    CLOUDINARY_URL: str
 
-    @property
-    def SQLALCHEMY_DATABASE_URI(self):
-        return self.DATABASE_URL  # sync engine uses plain postgresql://
+    model_config = ConfigDict(extra="allow")
 
 settings = Settings()

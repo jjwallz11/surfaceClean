@@ -1,5 +1,6 @@
 # app/utils/cloudinary.py
 
+import asyncio
 import os
 import cloudinary
 import cloudinary.uploader
@@ -34,12 +35,16 @@ cloudinary.config(
 # Define allowed user emails
 ALLOWED_EMAILS = {"jjparedez3@gmail.com", "surfaceclean111@yahoo.com"}
 
-def upload_image(file: Union[str, UploadFile], current_user_email: str, folder: str = "surface_clean") -> str:
+async def upload_image(file: Union[str, UploadFile], current_user_email: str, folder: str = "surface_clean") -> str:
     if current_user_email not in ALLOWED_EMAILS:
         raise HTTPException(status_code=403, detail="Not authorized to upload images.")
 
+    def _upload():
+        return cloudinary.uploader.upload(file, folder=folder)
+
     try:
-        result = cloudinary.uploader.upload(file, folder=folder)
+        loop = asyncio.get_event_loop()
+        result = await loop.run_in_executor(None, _upload)
         return result.get("secure_url")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Cloudinary upload failed: {str(e)}")
