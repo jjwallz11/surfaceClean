@@ -16,7 +16,6 @@ async def get_all_users(
     db: AsyncSession = Depends(get_async_db),
     current_user: User = Depends(get_current_user)
 ):
-    # No role check — allow all authenticated users to see the user list
     result = await db.execute(select(User))
     return result.scalars().all()
 
