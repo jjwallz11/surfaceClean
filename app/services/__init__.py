@@ -9,10 +9,5 @@ from .machines_services import (
     update_machine,
     delete_machine,
 )
-from .parts_services import (
-    create_part,
-    get_all_parts,
-    update_part,
-    delete_part,
-)
+
 from .testimonials_services import get_all_testimonials, create_testimonial, update_testimonial, delete_testimonial

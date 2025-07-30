@@ -6,7 +6,7 @@ from sqlalchemy.future import select
 from utils.db import get_async_db
 from utils.auth import get_current_user
 from models.images import Image
-from schemas.images import ImageCreate, ImageUpdate
+from schemas.images import ImageCreate, ImageUpdate, ImageResponse
 from typing import List
 
 router = APIRouter()
@@ -33,7 +33,7 @@ async def create_image(
     return image
 
 # UPDATE
-@router.patch("/{image_id}", response_model=ImageCreate)
+@router.patch("/{image_id}", response_model=ImageResponse)
 async def update_image(
     image_id: int,
     data: ImageUpdate,

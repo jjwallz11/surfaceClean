@@ -2,7 +2,6 @@
 
 import asyncio
 from sqlalchemy import text
-from sqlalchemy.ext.asyncio import AsyncSession
 from utils.db import AsyncSessionLocal, Base, engine
 from models.images import Image
 
@@ -20,13 +19,13 @@ async def seed_images():
             ),
             Image(
                 url="https://example.com/machine1_img2.jpg",
-                machine_id=1
-                # No description – tests NULL handling
+                machine_id=1,
+                description="Fails when NULL"
             ),
             Image(
-                url="https://example.com/part1_img1.jpg",
+                url="https://example.com/machine1_img1.jpg",
                 machine_id=1,
-                description="Replacement squeegee blade – fits T3 and T5"
+                description="Replacement squeegee blade, fits T3 and T5"
             )
         ]
 

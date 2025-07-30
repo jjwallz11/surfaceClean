@@ -5,5 +5,3 @@ from .machines import seed_machines, undo_machines
 from .images import seed_images, undo_images
 from .faqs import seed_faqs, undo_faqs
 from .testimonials import seed_testimonials, undo_testimonials
-
-# from .parts import seed_parts, undo_parts  # optional

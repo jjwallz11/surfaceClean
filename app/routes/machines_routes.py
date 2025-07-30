@@ -33,7 +33,7 @@ async def create_machine(
     return machine
 
 # UPDATE
-@router.put("/{machine_id}", response_model=MachineCreate)
+@router.patch("/{machine_id}", response_model=MachineCreate)
 async def update_machine(
     machine_id: int = Path(..., gt=0),
     data: MachineUpdate = Depends(),

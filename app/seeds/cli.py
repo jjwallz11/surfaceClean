@@ -5,7 +5,6 @@ import asyncio
 from seeds import (
     seed_users, undo_users,
     seed_machines, undo_machines,
-    # seed_parts, undo_parts,  # ❌ Temporarily disabled
     seed_images, undo_images,
     seed_faqs, undo_faqs,
     seed_testimonials, undo_testimonials
@@ -29,9 +28,6 @@ async def _seed_all():
     typer.echo("Seeding machines...")
     await seed_machines()
 
-    # typer.echo("Seeding parts...")       # ❌ Temporarily disabled
-    # await seed_parts()                   # ❌ Temporarily disabled
-
     typer.echo("Seeding images...")
     await seed_images()
 
@@ -53,9 +49,6 @@ async def _undo_all():
     await undo_testimonials()
     await undo_faqs()
     await undo_images()
-
-    # await undo_parts()  # ❌ Temporarily disabled
-
     await undo_machines()
     await undo_users()
 

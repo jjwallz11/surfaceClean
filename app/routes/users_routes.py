@@ -36,7 +36,7 @@ async def get_single_user(
     return user
 
 
-@router.put("/{user_id}", response_model=UserResponse)
+@router.patch("/{user_id}", response_model=UserResponse)
 async def update_user_route(
     user_id: int,
     user: UserUpdate,
