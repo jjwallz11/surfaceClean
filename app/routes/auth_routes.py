@@ -135,13 +135,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: AsyncSession
         print("❌ No user found with email:", email)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
-    print("✅ AUTHENTICATED USER:", user.email, user.role)
-    return user
-
-
-async def admin_or_locksmith(user: User = Depends(get_current_user)):
-    if user.role not in ["admin", "locksmith"]:
-        raise HTTPException(status_code=403, detail="Insufficient permissions")
+    print("✅ AUTHENTICATED USER:", user.email)
     return user
 
 

@@ -1,10 +1,8 @@
-# app/api/users_routes.py
-
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from utils.db import get_async_db
-from utils.errors import error_401, error_403, error_404
+from utils.errors import error_403, error_404
 from models.users import User
 from services.users_services import update_user, get_user_by_id
 from schemas.users import UserResponse, UserUpdate
@@ -18,9 +16,7 @@ async def get_all_users(
     db: AsyncSession = Depends(get_async_db),
     current_user: User = Depends(get_current_user)
 ):
-    if current_user.role != "admin":
-        error_401("Only admins can view all users")
-    
+    # No role check — allow all authenticated users to see the user list
     result = await db.execute(select(User))
     return result.scalars().all()
 
@@ -31,8 +27,8 @@ async def get_single_user(
     db: AsyncSession = Depends(get_async_db),
     current_user: User = Depends(get_current_user)
 ):
-    if current_user.role != "admin":
-        error_401("Only admins can view other users' profiles")
+    if current_user.id != user_id:
+        error_403("You can only view your own profile")
 
     user = await get_user_by_id(db, user_id)
     if not user:

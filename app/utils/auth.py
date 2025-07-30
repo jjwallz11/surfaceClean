@@ -66,5 +66,5 @@ async def get_current_user(
         print("❌ No user found with email:", email)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
-    print("✅ AUTHENTICATED USER:", user.email, user.role)
+    print("✅ AUTHENTICATED USER:", user.email)
     return user
