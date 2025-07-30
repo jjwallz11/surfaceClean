@@ -6,7 +6,7 @@ from sqlalchemy.future import select
 from utils.db import get_async_db
 from utils.auth import get_current_user
 from models.testimonials import Testimonial
-from schemas.testimonials import TestimonialCreate, TestimonialUpdate
+from schemas.testimonials import TestimonialCreate, TestimonialUpdate, TestimonialResponse
 from typing import List
 
 router = APIRouter()
@@ -33,7 +33,7 @@ async def create_testimonial(
     return testimonial
 
 # UPDATE
-@router.patch("/{testimonial_id}", response_model=TestimonialCreate)
+@router.patch("/{testimonial_id}", response_model=TestimonialResponse)
 async def update_testimonial(
     testimonial_id: int,
     data: TestimonialUpdate,

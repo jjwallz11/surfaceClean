@@ -1,12 +1,12 @@
 # app/api/machines_routes.py
 
-from fastapi import APIRouter, Depends, HTTPException, Path
+from fastapi import APIRouter, Depends, HTTPException, Path, Body
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from utils.db import get_async_db
 from utils.auth import get_current_user
 from models.machines import Machine
-from schemas.machines import MachineCreate, MachineUpdate
+from schemas.machines import MachineCreate, MachineUpdate, MachineResponse
 from typing import List
 
 router = APIRouter()
@@ -33,10 +33,10 @@ async def create_machine(
     return machine
 
 # UPDATE
-@router.patch("/{machine_id}", response_model=MachineCreate)
+@router.patch("/{machine_id}", response_model=MachineResponse)
 async def update_machine(
     machine_id: int = Path(..., gt=0),
-    data: MachineUpdate = Depends(),
+    data: MachineUpdate = Body(),
     db: AsyncSession = Depends(get_async_db),
     user=Depends(get_current_user)
 ):

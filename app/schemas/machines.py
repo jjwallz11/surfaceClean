@@ -6,16 +6,12 @@ from decimal import Decimal
 
 
 class MachineBase(BaseModel):
-    name: Optional[str] = None
-    description: Optional[str] = None
-    price: Optional[float] = None
-
-
-class MachineCreate(BaseModel):
-    name: str
-    price: float
     description: Optional[str] = None
     hours_used: Optional[Decimal] = None
+
+class MachineCreate(MachineBase):
+    name: str
+    price: float
 
 class MachineUpdate(MachineBase):
     pass
@@ -26,7 +22,6 @@ class MachineResponse(BaseModel):
     price: float
     description: Optional[str] = None
     hours_used: Optional[Decimal] = None
-    images: Optional[List[int]] = []
 
     class Config:
         model_config = {
