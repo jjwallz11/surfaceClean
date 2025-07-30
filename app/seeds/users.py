@@ -39,8 +39,7 @@ async def seed_users():
                     email=user_data["email"],
                     first_name=user_data["first_name"],
                     last_name=user_data["last_name"],
-                    password_hash=hash_password(user_data["password"]),
-                    role="admin" if "jjparedez" in user_data["email"] else "owner"
+                    hashed_password=hash_password(user_data["password"]),
                 )
                 db.add(user)
                 print(f"✅ Created user: {user.email}")

@@ -30,10 +30,10 @@ def hash_password(password):
 
 def create_access_token(data: dict, expires_delta: timedelta = None):
     to_encode = data.copy()
-    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES))
+    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=settings.JWT_EXPIRATION_MINUTES))
     to_encode.update({"exp": expire})
     print("🕒 TOKEN EXPIRES AT:", expire.isoformat())
-    return jwt.encode(to_encode, settings.JWT_SECRET, algorithm=settings.ALGORITHM)
+    return jwt.encode(to_encode, settings.JWT_SECRET, algorithm=settings.JWT_ALGORITHM)
 
 
 def decode_access_token(token: str):
@@ -50,7 +50,7 @@ async def get_current_user(
 ) -> User:
     print("🔐 TOKEN RECEIVED:", token)
     try:
-        payload = jwt.decode(token, settings.JWT_SECRET, algorithms=[settings.ALGORITHM])
+        payload = jwt.decode(token, settings.JWT_SECRET, algorithms=[settings.JWT_ALGORITHM])
         print("📦 DECODED PAYLOAD:", payload)
         email: str = payload.get("sub")
         if not email:

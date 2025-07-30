@@ -25,7 +25,7 @@ async def seed_images():
             ),
             Image(
                 url="https://example.com/part1_img1.jpg",
-                part_id=1,
+                machine_id=1,
                 description="Replacement squeegee blade – fits T3 and T5"
             )
         ]

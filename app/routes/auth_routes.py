@@ -1,4 +1,4 @@
-# app/routes/auth.py
+# app/routes/auth_routes.py
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
@@ -32,8 +32,15 @@ async def login(payload: LoginRequest, db: AsyncSession = Depends(get_async_db))
     """ Authenticate user and return JWT token """
     result = await db.execute(select(User).where(User.email == payload.email))
     user = result.scalars().first()
-
-    if not user or not verify_password(payload.password, user.password_hash):
+    print("📧 Email received:", payload.email)
+    print("🔍 User found in DB:", bool(user))
+    if user:
+        print("🧂 Stored hash:", user.hashed_password)
+        print("🔑 Password matches:", verify_password(payload.password, user.hashed_password))
+        print("🧪 Comparing raw password:", payload.password)
+        print("🧪 Against hash:", user.hashed_password)
+        print("🧾 Rehashed password (for comparison):", hash_password(payload.password))
+    if not user or not verify_password(payload.password, user.hashed_password):
         error_400("Invalid credentials")
 
     access_token = create_access_token({"sub": user.email})
@@ -54,7 +61,7 @@ async def login(payload: LoginRequest, db: AsyncSession = Depends(get_async_db))
 @router.get("/session/current")
 async def session_info_route(token: str = Depends(oauth2_scheme), db: AsyncSession = Depends(get_async_db)):
     try:
-        payload = jwt.decode(token, settings.JWT_SECRET, algorithms=[settings.ALGORITHM])
+        payload = jwt.decode(token, settings.JWT_SECRET, algorithms=[settings.JWT_ALGORITHM])
         email: str = payload.get("sub")
         if email is None:
             error_401("Invalid token: missing subject")
@@ -93,16 +100,16 @@ def hash_password(password):
 
 def create_access_token(data: dict, expires_delta: timedelta = None):
     to_encode = data.copy()
-    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES))
+    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=settings.JWT_EXPIRATION_MINUTES))
     to_encode.update({"exp": expire})
 
     print("🕒 TOKEN EXPIRES AT:", expire.isoformat())  # Debug
-    return jwt.encode(to_encode, settings.JWT_SECRET, algorithm=settings.ALGORITHM)
+    return jwt.encode(to_encode, settings.JWT_SECRET, algorithm=settings.JWT_ALGORITHM)
 
 
 def decode_access_token(token: str):
     try:
-        payload = jwt.decode(token, settings.JWT_SECRET, algorithms=[settings.ALGORITHM])
+        payload = jwt.decode(token, settings.JWT_SECRET, algorithms=[settings.JWT_ALGORITHM])
         return payload
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
@@ -111,7 +118,7 @@ def decode_access_token(token: str):
 async def get_current_user(token: str = Depends(oauth2_scheme), db: AsyncSession = Depends(get_async_db)) -> User:
     print("🔐 TOKEN RECEIVED:", token)
     try:
-        payload = jwt.decode(token, settings.JWT_SECRET, algorithms=[settings.ALGORITHM])
+        payload = jwt.decode(token, settings.JWT_SECRET, algorithms=[settings.JWT_ALGORITHM])
         print("📦 DECODED PAYLOAD:", payload)
         email: str = payload.get("sub")
         if not email:

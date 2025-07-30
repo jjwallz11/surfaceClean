@@ -11,7 +11,7 @@ async def create_user(db: AsyncSession, user_data: UserCreate) -> User:
     hashed_pw = hash_password(user_data.password)
     user = User(
         email=user_data.email,
-        password_hash=hashed_pw,
+        hashed_password=hashed_pw,
         first_name=user_data.first_name,
         last_name=user_data.last_name,
     )
@@ -32,7 +32,7 @@ async def update_user(db: AsyncSession, user: User, user_data: UserUpdate) -> Us
     if user_data.email is not None:
         user.email = user_data.email
     if user_data.password is not None:
-        user.password_hash = hash_password(user_data.password)
+        user.hashed_password = hash_password(user_data.password)
 
     await db.commit()
     await db.refresh(user)
