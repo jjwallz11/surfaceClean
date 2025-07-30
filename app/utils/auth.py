@@ -15,7 +15,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-ALGORITHM = "HS256"
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/session/login")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -38,7 +37,7 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
 
 def decode_access_token(token: str):
     try:
-        payload = jwt.decode(token, settings.JWT_SECRET, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, settings.JWT_SECRET, algorithms=[settings.JWT_ALGORITHM])
         return payload
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid or expired token")

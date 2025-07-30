@@ -6,6 +6,7 @@ __pycache__/
 *.log
 *.sqlite3
 *.db
+BROWSER_TESTS.MD
 
 # Python / FastAPI backend
 app/__pycache__/
