@@ -3,7 +3,7 @@
 from itsdangerous import URLSafeTimedSerializer
 from config import settings
 
-serializer = URLSafeTimedSerializer(settings.SECRET_KEY)
+serializer = URLSafeTimedSerializer(settings.JWT_SECRET)
 
 def create_reset_token(user_id: int) -> str:
     return serializer.dumps({"user_id": user_id}, salt="password-reset")

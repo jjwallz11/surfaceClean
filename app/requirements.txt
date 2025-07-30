@@ -1,5 +1,6 @@
 # app/requirements.txt
 
+aiosqlite==0.20.0
 annotated-types==0.7.0
 anyio==4.9.0
 async-timeout==5.0.1
