@@ -12,7 +12,7 @@ This is a minimal fullstack web template using:
 ## 📦 Project Structure
 
 .
-├── backend/       # FastAPI backend (API, models, schemas)
+├── app/       # FastAPI backend (API, models, schemas)
 ├── frontend/      # React + TS frontend (Vite-based)
 ├── docker-compose.yml
 ├── requirements.txt / Pipfile
