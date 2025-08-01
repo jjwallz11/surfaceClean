@@ -7,7 +7,8 @@ from utils.db import get_async_db
 from utils.auth import get_current_user
 from models.faqs import FAQ
 from schemas.faqs import FAQCreate, FAQUpdate, FAQResponse
-from datetime import date
+from datetime import datetime
+from sqlalchemy import or_
 from typing import List
 
 router = APIRouter()
@@ -18,15 +19,16 @@ router = APIRouter()
 async def get_live_faqs(
     db: AsyncSession = Depends(get_async_db)
 ):
-    today = date.today()
+    today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
     result = await db.execute(
         select(FAQ).where(
-            FAQ.scheduled_post_date == None  # Show always-visible ones
-            | (FAQ.scheduled_post_date <= today)  # Or scheduled and due
+            or_(
+                FAQ.scheduled_post_date == None,  # Always-visible
+                FAQ.scheduled_post_date <= today  # Or scheduled and due
+            )
         )
     )
     return result.scalars().all()
-
 
 # READ
 @router.get("/", response_model=List[FAQCreate])
