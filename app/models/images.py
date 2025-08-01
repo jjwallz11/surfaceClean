@@ -12,5 +12,6 @@ class Image(Base):
     url = Column(String, nullable=False)
     description = Column(String, nullable=True)
     machine_id = Column(Integer, ForeignKey("machines.id"), nullable=True)
+    public_id = Column(String, nullable=False)
 
     machine = relationship("Machine", back_populates="images")

@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from utils.db import get_async_db
 from utils.auth import get_current_user
-from utils.cloudinary import upload_image
+from utils.cloudinary import upload_image, delete_image as delete_from_cloudinary
 from models.images import Image
 from schemas.images import ImageCreate, ImageUpdate, ImageResponse
 from typing import List
@@ -30,11 +30,12 @@ async def create_image(
     user=Depends(get_current_user)
 ):
     # Upload to Cloudinary
-    cloudinary_url = await upload_image(file.file, user.email)
+    cloudinary_result = await upload_image(file.file, user.email)
 
     # Save to DB
     new_image = Image(
-        url=cloudinary_url,
+        url=cloudinary_result["secure_url"],
+        public_id=cloudinary_result["public_id"],
         description=description,
         machine_id=machine_id
     )
@@ -77,6 +78,12 @@ async def delete_image(
     if not image:
         raise HTTPException(status_code=404, detail="Image not found")
 
+    # Delete from Cloudinary using URL
+    if image.url:
+        await delete_from_cloudinary(image.url)
+
+    # Delete from DB
     await db.delete(image)
     await db.commit()
+
     return {"message": "Image deleted"}

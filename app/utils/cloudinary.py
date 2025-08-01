@@ -45,6 +45,31 @@ async def upload_image(file: Union[str, UploadFile], current_user_email: str, fo
     try:
         loop = asyncio.get_event_loop()
         result = await loop.run_in_executor(None, _upload)
-        return result.get("secure_url")
+        return {
+            "secure_url": result.get("secure_url"),
+            "public_id": result.get("public_id")
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Cloudinary upload failed: {str(e)}")
+    
+def extract_public_id(url: str, folder: str = "surface_clean") -> str:
+    # Ex: https://res.cloudinary.com/demo/image/upload/v123456/surface_clean/filename.jpg
+    # Returns: surface_clean/filename (no extension)
+    from urllib.parse import urlparse
+    path = urlparse(url).path  # /demo/image/upload/v123456/surface_clean/filename.jpg
+    parts = path.split('/')
+    folder_index = parts.index(folder)
+    public_id_with_ext = '/'.join(parts[folder_index:])  # surface_clean/filename.jpg
+    public_id = public_id_with_ext.rsplit('.', 1)[0]  # surface_clean/filename
+    return public_id
+
+async def delete_image(url: str, folder: str = "surface_clean") -> None:
+    public_id = extract_public_id(url, folder)
+    def _delete():
+        return cloudinary.uploader.destroy(public_id)
+
+    loop = asyncio.get_event_loop()
+    result = await loop.run_in_executor(None, _delete)
+
+    if result.get("result") != "ok":
+        raise Exception(f"Cloudinary delete failed: {result}")

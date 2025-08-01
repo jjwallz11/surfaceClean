@@ -15,17 +15,20 @@ async def seed_images():
             Image(
                 url="https://example.com/machine1_img1.jpg",
                 machine_id=1,
-                description="Front view of refurbished Tennant T5"
+                description="Front view of refurbished Tennant T5",
+                public_id="1"
             ),
             Image(
                 url="https://example.com/machine1_img2.jpg",
                 machine_id=1,
-                description="Fails when NULL"
+                description="Fails when NULL",
+                public_id="2"
             ),
             Image(
                 url="https://example.com/machine1_img1.jpg",
                 machine_id=1,
-                description="Replacement squeegee blade, fits T3 and T5"
+                description="Replacement squeegee blade, fits T3 and T5",
+                public_id="3"
             )
         ]
 
