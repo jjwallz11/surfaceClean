@@ -8,6 +8,7 @@ __pycache__/
 *.db
 BROWSER_TESTS.MD
 BACKEND_COMMANDS.MD
+PSQLCommand.MD
 
 # Python / FastAPI backend
 app/__pycache__/

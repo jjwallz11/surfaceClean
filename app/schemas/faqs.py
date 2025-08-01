@@ -2,10 +2,12 @@
 
 from pydantic import BaseModel
 from typing import Optional
+from datetime import date
 
 class FAQBase(BaseModel):
     question: str
     answer: str
+    scheduled_post_date: Optional[date] = None
 
 class FAQCreate(FAQBase):
     pass

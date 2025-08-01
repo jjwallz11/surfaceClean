@@ -6,10 +6,27 @@ from sqlalchemy.future import select
 from utils.db import get_async_db
 from utils.auth import get_current_user
 from models.faqs import FAQ
-from schemas.faqs import FAQCreate, FAQUpdate
+from schemas.faqs import FAQCreate, FAQUpdate, FAQResponse
+from datetime import date
 from typing import List
 
 router = APIRouter()
+
+
+# READ LIVE
+@router.get("/live", response_model=List[FAQResponse])
+async def get_live_faqs(
+    db: AsyncSession = Depends(get_async_db)
+):
+    today = date.today()
+    result = await db.execute(
+        select(FAQ).where(
+            FAQ.scheduled_post_date == None  # Show always-visible ones
+            | (FAQ.scheduled_post_date <= today)  # Or scheduled and due
+        )
+    )
+    return result.scalars().all()
+
 
 # READ
 @router.get("/", response_model=List[FAQCreate])

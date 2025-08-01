@@ -2,7 +2,6 @@
 
 import asyncio
 from sqlalchemy import text
-from sqlalchemy.ext.asyncio import AsyncSession
 from utils.db import AsyncSessionLocal, Base, engine
 from models.faqs import FAQ
 
@@ -15,15 +14,17 @@ async def seed_faqs():
         faqs = [
             FAQ(
                 question="How long does shipping take?",
-                answer="Shipping typically takes 5-7 business days."
+                answer="Shipping typically takes 5-7 business days.",
             ),
             FAQ(
                 question="Are the machines refurbished?",
-                answer="Yes, all machines are cleaned, tested, and refurbished before resale."
+                answer="Yes, all machines are cleaned, tested, and refurbished before resale.",
+                scheduled_post_date="08-5-2025"
             ),
             FAQ(
                 question="Do you offer warranties?",
-                answer="A limited 30-day warranty is provided on all machines unless otherwise specified."
+                answer="A limited 30-day warranty is provided on all machines unless otherwise specified.",
+                scheduled_post_date="08-6-2025"
             )
         ]
 
