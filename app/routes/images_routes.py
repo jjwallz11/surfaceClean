@@ -1,10 +1,11 @@
 # app/api/images_routes.py
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, File, UploadFile, Form
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from utils.db import get_async_db
 from utils.auth import get_current_user
+from utils.cloudinary import upload_image
 from models.images import Image
 from schemas.images import ImageCreate, ImageUpdate, ImageResponse
 from typing import List
@@ -20,17 +21,27 @@ async def get_images(
     return result.scalars().all()
 
 # CREATE
-@router.post("/", response_model=ImageCreate)
+@router.post("/", response_model=ImageResponse)
 async def create_image(
-    data: ImageCreate,
+    file: UploadFile = File(...),
+    description: str = Form(...),
+    machine_id: int = Form(...),
     db: AsyncSession = Depends(get_async_db),
     user=Depends(get_current_user)
 ):
-    image = Image(**data.dict())
-    db.add(image)
+    # Upload to Cloudinary
+    cloudinary_url = await upload_image(file.file, user.email)
+
+    # Save to DB
+    new_image = Image(
+        url=cloudinary_url,
+        description=description,
+        machine_id=machine_id
+    )
+    db.add(new_image)
     await db.commit()
-    await db.refresh(image)
-    return image
+    await db.refresh(new_image)
+    return new_image
 
 # UPDATE
 @router.patch("/{image_id}", response_model=ImageResponse)
