@@ -20,12 +20,12 @@ async def seed_faqs():
             FAQ(
                 question="Are the machines refurbished?",
                 answer="Yes, all machines are cleaned, tested, and refurbished before resale.",
-                scheduled_post_date=date(2025, 8, 4)
+                scheduled_post_date=date(2025, 9, 4)
             ),
             FAQ(
                 question="Do you offer warranties?",
                 answer="A limited 30-day warranty is provided on all machines unless otherwise specified.",
-                scheduled_post_date=date(2025, 8, 5)
+                scheduled_post_date=date(2025, 10, 5)
             )
         ]
 
