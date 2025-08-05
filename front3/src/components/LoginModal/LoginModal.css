@@ -1,0 +1,56 @@
+/* components/LoginModal/LoginModal.css */
+
+.login-modal {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  border: 3px solid #568EA3; /* Steel Blue */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 320px;
+  text-align: center;
+}
+
+.login-modal h1 {
+  color: #072460; /* Patriotic Blue */
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+}
+
+.login-form input {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 2px solid #568EA3;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #072460;
+}
+
+.login-form input::placeholder {
+  color: #a0a0a0;
+}
+
+.error-message {
+  color: #AE2335; /* Patriotic Red */
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin: 4px 0 10px 0;
+}
+
+.login-modal-btn {
+  background-color: #072460; /* Patriotic Blue */
+  color: #ffffff;
+  padding: 10px 20px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.login-modal-btn:hover {
+  background-color: #0A3161; /* Old Glory Blue */
+}

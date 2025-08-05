@@ -1,0 +1,84 @@
+/* components/MachineCard/MachineCard.css */
+
+.machine-card {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+  background-color: #fff;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.machine-image {
+  width: 100%;
+  max-height: 240px;
+  object-fit: cover;
+  border-radius: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.machine-name {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #072460;
+  margin-bottom: 0.5rem;
+}
+
+.machine-description {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.machine-price {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #ae2335;
+  margin-bottom: 0.75rem;
+}
+
+.machine-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.machine-edit-input,
+.machine-edit-textarea {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.machine-edit-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.btn-edit,
+.btn-delete {
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.btn-edit {
+  background-color: #072460;
+  color: #fff;
+}
+
+.btn-edit:hover {
+  background-color: #0a3161;
+}
+
+.btn-delete {
+  background-color: #ae2335;
+  color: #fff;
+}
+
+.btn-delete:hover {
+  background-color: #b31942;
+}

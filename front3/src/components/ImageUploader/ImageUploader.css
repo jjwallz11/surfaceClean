@@ -1,0 +1,57 @@
+/* components/ImageUploader/ImageUploader.css */
+
+.image-uploader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ffe8d1; /* Cream */
+  padding: 1.5rem;
+  border: 2px dashed #568ea3; /* Steel Blue */
+  border-radius: 12px;
+  color: #072460; /* Patriotic Blue for text contrast */
+  font-weight: bold;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.image-uploader:hover {
+  border-color: #0a3161; /* Old Glory Blue */
+}
+
+.image-preview {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.image-thumb {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border: 2px solid #568ea3;
+  border-radius: 8px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.upload-button {
+  margin-top: 1rem;
+  background-color: #072460; /* Primary Button Color */
+  color: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.upload-button:hover {
+  background-color: #0a3161; /* Hover shade */
+}
+
+input[type="file"] {
+  margin-top: 1rem;
+  color: #072460;
+}

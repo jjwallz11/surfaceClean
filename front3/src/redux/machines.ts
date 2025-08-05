@@ -8,6 +8,7 @@ interface Machine {
   price: number;
   description: string;
   hours_used: number;
+  image_url: string;
   created_at: string;
 }
 
