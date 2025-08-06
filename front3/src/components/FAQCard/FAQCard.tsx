@@ -21,13 +21,12 @@ interface FAQCardProps {
 const FAQCard = ({ faq }: FAQCardProps) => {
   const dispatch = useDispatch<any>();
   const user = useSelector((state: RootState) => state.session.user);
-  const updatedFAQ = useSelector((state: RootState) => state.faqs[faq.id]);
+  const updatedFAQ = useSelector((state: RootState) => state.faqs.all[faq.id]);
+
   const [editing, setEditing] = useState(false);
   const [question, setQuestion] = useState(faq.question);
   const [answer, setAnswer] = useState(faq.answer);
   const [showConfirm, setShowConfirm] = useState(false);
-
-  const isAdmin = !!user;
 
   useEffect(() => {
     if (updatedFAQ) {
@@ -79,7 +78,7 @@ const FAQCard = ({ faq }: FAQCardProps) => {
         </>
       )}
 
-      {isAdmin && (
+      {user && (
         <div className="faq-actions">
           <button onClick={handleEdit} className="btn-edit">
             {editing ? "Save" : "Edit"}

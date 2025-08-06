@@ -1,34 +1,32 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllFaqs } from '../../redux/faqs';
-import { RootState } from '../../redux/store';
-import FAQCard from '../../components/FAQCard/FAQCard';
-import './FAQsPage.css';
+// pages/FAQsPage/FAQsPage.tsx
+
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { getAllFaqs } from "../../redux/faqs";
+import FAQCard from "../../components/FAQCard/FAQCard";
+import "./FAQsPage.css";
 
 const FAQsPage = () => {
   const dispatch = useDispatch<any>();
-  const faqs = useSelector((state: RootState) => state.faqs.faqs);
+  const faqs = useSelector((state: RootState) =>
+    Object.values(state.faqs.all)
+  );
 
   useEffect(() => {
     dispatch(getAllFaqs());
   }, [dispatch]);
 
-  const faqsArr = Object.values(faqs || {});
-
   return (
     <div className="faqs-page">
       <h1>Frequently Asked Questions</h1>
-      {faqsArr.length ? (
-        <ul className="faq-list">
-          {faqsArr.map((faq) => (
-            <li key={faq.id}>
-              <FAQCard faq={faq} />
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No FAQs posted yet.</p>
-      )}
+      <div className="faq-list">
+        {faqs.length ? (
+          faqs.map((faq) => <FAQCard key={faq.id} faq={faq} />)
+        ) : (
+          <p>No FAQs posted yet.</p>
+        )}
+      </div>
     </div>
   );
 };
