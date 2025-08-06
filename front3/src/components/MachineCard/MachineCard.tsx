@@ -20,7 +20,7 @@ interface MachineCardProps {
 }
 
 const MachineCard = ({ machine }: MachineCardProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   const user = useSelector((state: RootState) => state.session.user);
   const updatedMachine = useSelector(
     (state: RootState) => state.machines.all[machine.id]
@@ -49,7 +49,7 @@ const MachineCard = ({ machine }: MachineCardProps) => {
         description !== machine.description ||
         imageUrl !== machine.image_url)
     ) {
-      await (dispatch as any)(
+      await dispatch(
         machineActions.editMachine(machine.id, {
           name,
           description,
@@ -65,7 +65,7 @@ const MachineCard = ({ machine }: MachineCardProps) => {
   };
 
   const confirmDelete = () => {
-    (dispatch as any)(machineActions.removeMachine(machine.id));
+    dispatch(machineActions.removeMachine(machine.id));
     setShowConfirm(false);
   };
 

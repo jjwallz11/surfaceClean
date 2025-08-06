@@ -1,14 +1,11 @@
 // redux/testimonials.ts
 
-import { csrfFetch } from './csrf';
-import { setLoading } from './session';
-
 /******************************* TYPES *******************************************/
 
-export interface Testimonial {
+interface Testimonial {
   id: number;
   author_name: string;
-  stars: number;
+  stars: string;
   notables?: string;
   content: string;
   created_at: string;
@@ -16,153 +13,138 @@ export interface Testimonial {
 }
 
 interface TestimonialsState {
-  testimonials: Record<number, Testimonial>;
+  all: Record<number, Testimonial>;
 }
 
-/******************************* ACTION TYPES *******************************************/
-
-const LOAD_ALL = 'testimonials/loadAll';
-const ADD_ONE = 'testimonials/addOne';
-const UPDATE_ONE = 'testimonials/updateOne';
-const DELETE_ONE = 'testimonials/deleteOne';
-
-interface LoadAllAction {
-  type: typeof LOAD_ALL;
+interface LoadTestimonialsAction {
+  type: typeof LOAD_TESTIMONIALS;
   payload: Testimonial[];
 }
 
-interface AddOneAction {
-  type: typeof ADD_ONE;
+interface AddTestimonialAction {
+  type: typeof ADD_TESTIMONIAL;
   payload: Testimonial;
 }
 
-interface UpdateOneAction {
-  type: typeof UPDATE_ONE;
+interface UpdateTestimonialAction {
+  type: typeof UPDATE_TESTIMONIAL;
   payload: Testimonial;
 }
 
-interface DeleteOneAction {
-  type: typeof DELETE_ONE;
+interface DeleteTestimonialAction {
+  type: typeof DELETE_TESTIMONIAL;
   payload: number;
 }
 
-type TestimonialActions =
-  | LoadAllAction
-  | AddOneAction
-  | UpdateOneAction
-  | DeleteOneAction;
+type TestimonialsActionTypes =
+  | LoadTestimonialsAction
+  | AddTestimonialAction
+  | UpdateTestimonialAction
+  | DeleteTestimonialAction;
+
+/******************************* ACTION TYPES *******************************************/
+
+const LOAD_TESTIMONIALS = 'testimonials/load';
+const ADD_TESTIMONIAL = 'testimonials/add';
+const UPDATE_TESTIMONIAL = 'testimonials/update';
+const DELETE_TESTIMONIAL = 'testimonials/delete';
 
 /******************************* ACTION CREATORS *******************************************/
 
-export const loadAll = (testimonials: Testimonial[]): LoadAllAction => ({
-  type: LOAD_ALL,
+export const loadTestimonials = (testimonials: Testimonial[]): LoadTestimonialsAction => ({
+  type: LOAD_TESTIMONIALS,
   payload: testimonials,
 });
 
-export const addOne = (testimonial: Testimonial): AddOneAction => ({
-  type: ADD_ONE,
+export const addTestimonial = (testimonial: Testimonial): AddTestimonialAction => ({
+  type: ADD_TESTIMONIAL,
   payload: testimonial,
 });
 
-export const updateOne = (testimonial: Testimonial): UpdateOneAction => ({
-  type: UPDATE_ONE,
+export const updateTestimonial = (testimonial: Testimonial): UpdateTestimonialAction => ({
+  type: UPDATE_TESTIMONIAL,
   payload: testimonial,
 });
 
-export const deleteOne = (id: number): DeleteOneAction => ({
-  type: DELETE_ONE,
+export const deleteTestimonial = (id: number): DeleteTestimonialAction => ({
+  type: DELETE_TESTIMONIAL,
   payload: id,
 });
 
-/******************************* THUNK ACTIONS *******************************************/
+/******************************* THUNKS *******************************************/
 
-// Get all testimonials
-export const getAllTestimonials = () => async (dispatch: any) => {
+import { csrfFetch } from './csrf';
+import { setLoading } from './session';
+
+export const getTestimonials = () => async (dispatch: any) => {
   try {
     const res = await csrfFetch('/api/testimonials/');
-    if (!res.ok) throw Error('Failed to get testimonials');
     const data = await res.json();
-    dispatch(loadAll(data.testimonials));
-  } catch (e) {
-    console.error('Error loading testimonials:', e);
+    dispatch(loadTestimonials(data.testimonials));
+  } catch (err) {
+    console.error('Failed to fetch testimonials:', err);
   } finally {
     dispatch(setLoading(false));
   }
 };
 
-// Add a new testimonial
-export const createTestimonial = (payload: Partial<Testimonial>) => async (dispatch: any) => {
-  try {
-    const res = await csrfFetch('/api/testimonials/', {
-      method: 'POST',
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) throw Error('Failed to create testimonial');
-    const testimonial = await res.json();
-    dispatch(addOne(testimonial));
-  } catch (e) {
-    console.error('Error creating testimonial:', e);
+export const createTestimonial = (testimonialData: Partial<Testimonial>) => async (dispatch: any) => {
+  const res = await csrfFetch('/api/testimonials/', {
+    method: 'POST',
+    body: JSON.stringify(testimonialData),
+  });
+
+  if (res.ok) {
+    const newTestimonial = await res.json();
+    dispatch(addTestimonial(newTestimonial));
   }
 };
 
-// Update testimonial
-export const editTestimonial = (id: number, payload: Partial<Testimonial>) => async (dispatch: any) => {
-  try {
-    const res = await csrfFetch(`/api/testimonials/${id}`, {
-      method: 'PATCH',
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) throw Error('Failed to update testimonial');
-    const testimonial = await res.json();
-    dispatch(updateOne(testimonial));
-  } catch (e) {
-    console.error('Error updating testimonial:', e);
+export const editTestimonial = (id: number, updates: Partial<Testimonial>) => async (dispatch: any) => {
+  const res = await csrfFetch(`/api/testimonials/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(updates),
+  });
+
+  if (res.ok) {
+    const updated = await res.json();
+    dispatch(updateTestimonial(updated));
   }
 };
 
-// Delete testimonial
-export const deleteTestimonial = (id: number) => async (dispatch: any) => {
-  try {
-    const res = await csrfFetch(`/api/testimonials/${id}`, {
-      method: 'DELETE',
-    });
-    if (!res.ok) throw Error('Failed to delete testimonial');
-    await res.json();
-    dispatch(deleteOne(id));
-  } catch (e) {
-    console.error('Error deleting testimonial:', e);
+export const removeTestimonial = (id: number) => async (dispatch: any) => {
+  const res = await csrfFetch(`/api/testimonials/${id}`, {
+    method: 'DELETE',
+  });
+
+  if (res.ok) {
+    dispatch(deleteTestimonial(id));
   }
 };
 
-/******************************* INITIAL STATE AND REDUCER *******************************************/
+/******************************* REDUCER *******************************************/
 
 const initialState: TestimonialsState = {
-  testimonials: {},
+  all: {},
 };
 
 export default function testimonialsReducer(
   state = initialState,
-  action: TestimonialActions
+  action: TestimonialsActionTypes
 ): TestimonialsState {
   switch (action.type) {
-    case LOAD_ALL: {
-      const all: Record<number, Testimonial> = {};
-      action.payload.forEach(t => (all[t.id] = t));
-      return { ...state, testimonials: all };
+    case LOAD_TESTIMONIALS: {
+      const newAll: Record<number, Testimonial> = {};
+      action.payload.forEach((t) => (newAll[t.id] = t));
+      return { ...state, all: newAll };
     }
-    case ADD_ONE:
-    case UPDATE_ONE:
-      return {
-        ...state,
-        testimonials: {
-          ...state.testimonials,
-          [action.payload.id]: action.payload,
-        },
-      };
-    case DELETE_ONE: {
-      const updated = { ...state.testimonials };
-      delete updated[action.payload];
-      return { ...state, testimonials: updated };
+    case ADD_TESTIMONIAL:
+    case UPDATE_TESTIMONIAL:
+      return { ...state, all: { ...state.all, [action.payload.id]: action.payload } };
+    case DELETE_TESTIMONIAL: {
+      const newAll = { ...state.all };
+      delete newAll[action.payload];
+      return { ...state, all: newAll };
     }
     default:
       return state;

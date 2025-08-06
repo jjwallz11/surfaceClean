@@ -19,7 +19,7 @@ interface FAQCardProps {
 }
 
 const FAQCard = ({ faq }: FAQCardProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   const user = useSelector((state: RootState) => state.session.user);
   const updatedFAQ = useSelector((state: RootState) => state.faqs[faq.id]);
   const [editing, setEditing] = useState(false);
@@ -38,7 +38,7 @@ const FAQCard = ({ faq }: FAQCardProps) => {
 
   const handleEdit = async () => {
     if (editing && (question !== faq.question || answer !== faq.answer)) {
-      await (dispatch as any)(
+      await dispatch(
         faqActions.editFaq(faq.id, {
           question,
           answer,
@@ -53,7 +53,7 @@ const FAQCard = ({ faq }: FAQCardProps) => {
   };
 
   const confirmDelete = () => {
-    (dispatch as any)(faqActions.removeFaq(faq.id));
+    dispatch(faqActions.removeFaq(faq.id));
     setShowConfirm(false);
   };
 

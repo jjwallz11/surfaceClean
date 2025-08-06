@@ -7,7 +7,7 @@ import { thunkLogin } from "../../redux/session";
 import "./LoginModal.css";
 
 function LoginModal() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   const { closeModal } = useModal();
 
   const [email, setEmail] = useState("");

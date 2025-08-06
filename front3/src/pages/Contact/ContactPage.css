@@ -1,0 +1,30 @@
+/* front3/src/pages/ContactPage/ContactPage.css */
+
+.contact-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  line-height: 1.6;
+  font-size: 1rem;
+  color: #072460;
+}
+
+.contact-container h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #AE2335;
+}
+
+.contact-container a {
+  color: #568EA3;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.contact-container a:hover {
+  text-decoration: underline;
+}

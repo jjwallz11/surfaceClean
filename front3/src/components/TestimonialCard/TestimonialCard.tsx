@@ -7,19 +7,26 @@ import * as testimonialActions from "../../redux/testimonials";
 import ConfirmationModal from "../ConfirmationModal/ConfirmationModal";
 import "./TestimonialCard.css";
 
+interface Testimonial {
+  id: number;
+  authorName: string;
+  stars: string;
+  notables: string;
+  content: string;
+}
 interface TestimonialCardProps {
-  testimonial: testimonialActions.Testimonial;
+  testimonial: Testimonial;
 }
 
 const TestimonialCard = ({ testimonial }: TestimonialCardProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   const user = useSelector((state: RootState) => state.session.user);
   const updatedTestimonial = useSelector(
-    (state: RootState) => state.testimonials.testimonials[testimonial.id]
+    (state: RootState) => state.testimonials[testimonial.id]
   );
 
   const [editing, setEditing] = useState(false);
-  const [authorName, setAuthorName] = useState(testimonial.author_name);
+  const [authorName, setAuthorName] = useState(testimonial.authorName);
   const [stars, setStars] = useState(testimonial.stars);
   const [notables, setNotables] = useState(testimonial.notables || "");
   const [content, setContent] = useState(testimonial.content);
@@ -40,13 +47,13 @@ const TestimonialCard = ({ testimonial }: TestimonialCardProps) => {
     if (
       editing &&
       (
-        authorName !== testimonial.author_name ||
+        authorName !== testimonial.authorName ||
         stars !== testimonial.stars ||
         notables !== (testimonial.notables || "") ||
         content !== testimonial.content
       )
     ) {
-      await (dispatch as any)(
+      await dispatch(
         testimonialActions.editTestimonial(testimonial.id, {
           author_name: authorName,
           stars,
@@ -63,7 +70,7 @@ const TestimonialCard = ({ testimonial }: TestimonialCardProps) => {
   };
 
   const confirmDelete = () => {
-    (dispatch as any)(testimonialActions.deleteTestimonial(testimonial.id));
+    dispatch(testimonialActions.deleteTestimonial(testimonial.id));
     setShowConfirm(false);
   };
 
@@ -79,11 +86,11 @@ const TestimonialCard = ({ testimonial }: TestimonialCardProps) => {
           />
           <input
             className="testimonial-input"
-            type="number"
+            type="string"
             min="1"
             max="5"
             value={stars}
-            onChange={(e) => setStars(Number(e.target.value))}
+            onChange={(e) => setStars(String(e.target.value))}
             placeholder="Stars"
           />
           <input
