@@ -97,7 +97,15 @@ export const thunkLogin = (credentials: { email: string; password: string }) => 
 // Logout
 export const thunkLogout = () => async (dispatch: any) => {
   dispatch(setLoading(true));
-  await fetch('/api/session/logout');
+
+  await fetch("/api/session/logout", {
+    method: "POST",
+    credentials: "include", // include cookies in request
+  });
+
+  // Frontend can only remove non-httpOnly cookies like csrf_token
+  document.cookie = "csrf_token=; Max-Age=0; path=/";
+
   dispatch(removeUser());
   dispatch(setLoading(false));
 };

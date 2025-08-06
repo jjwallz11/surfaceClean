@@ -10,8 +10,6 @@ function Navigation() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isAdmin = !!user;
-
   const pageTitles: Record<string, string> = {
     "/": "Surface Clean",
     "/admin": "🔒 Admin",
@@ -19,6 +17,8 @@ function Navigation() {
     "/images": "🖼️ Images",
     "/testimonials": "⭐ Testimonials",
     "/faqs": "❓ FAQs",
+    "/about": "About",
+    "/contact": "Contact",
   };
 
   const currentTitle = pageTitles[location.pathname] || "Surface Clean";
@@ -31,35 +31,38 @@ function Navigation() {
 
       <h1 className="nav-title">{currentTitle}</h1>
 
-      {isAdmin && (
-        <ul className="nav-list">
-          <li>
-            <NavLink to="/" className="nav-link">
-              Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/machines" className="nav-link">
-              Machines
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/images" className="nav-link">
-              Images
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/testimonials" className="nav-link">
-              Testimonials
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/faqs" className="nav-link">
-              FAQs
-            </NavLink>
-          </li>
-        </ul>
-      )}
+      <ul className="nav-list">
+        <li>
+          <NavLink to="/" className="nav-link">
+            Home
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/machines" className="nav-link">
+            Machines
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/testimonials" className="nav-link">
+            Testimonials
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/faqs" className="nav-link">
+            FAQs
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/contact" className="nav-link">
+            Contact
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/about" className="nav-link">
+            About
+          </NavLink>
+        </li>
+      </ul>
     </nav>
   );
 }

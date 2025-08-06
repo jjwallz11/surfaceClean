@@ -12,7 +12,7 @@ app = FastAPI(title="Surface Clean API", debug=settings.DEBUG)
 if settings.ENVIRONMENT == "production":
     origins = ["https://yourdomain.com"]
 else:
-    origins = ["http://localhost:2911"]
+    origins = ["http://localhost:5173"]
 
 app.add_middleware(
     CORSMiddleware,

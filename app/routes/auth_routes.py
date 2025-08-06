@@ -1,6 +1,6 @@
 # app/routes/auth_routes.py
 
-from fastapi import APIRouter, Depends, HTTPException, status, Request
+from fastapi import APIRouter, Depends, HTTPException, status, Request, Response
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -113,7 +113,24 @@ async def get_current(user: User = Depends(get_current_user)):
 
 @router.post("/session/logout")
 async def logout():
-    return {"message": "Logout successful, please remove token on client side"}
+    secure_cookie = settings.ENVIRONMENT == "production"
+
+    response = JSONResponse(content={"message": "Logout successful"})
+
+    response.delete_cookie(
+        key="access_token",
+        httponly=True,
+        samesite="Lax",
+        secure=secure_cookie
+    )
+    response.delete_cookie(
+        key="csrf_token",
+        httponly=False,
+        samesite="Lax",
+        secure=secure_cookie
+    )
+
+    return response
 
 
 class PasswordResetRequest(BaseModel):

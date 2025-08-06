@@ -1,4 +1,4 @@
-// components/MachineCard/MachineCard.tsx
+// front3/src/components/MachineCard/MachineCard.tsx
 
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,8 +31,6 @@ const MachineCard = ({ machine }: MachineCardProps) => {
   const [description, setDescription] = useState(machine.description);
   const [imageUrl, setImageUrl] = useState(machine.image_url);
   const [showConfirm, setShowConfirm] = useState(false);
-
-  const isAdmin = !!user;
 
   useEffect(() => {
     if (updatedMachine) {
@@ -72,7 +70,7 @@ const MachineCard = ({ machine }: MachineCardProps) => {
   return (
     <div className="machine-card">
       {editing ? (
-        <>
+        <div key="edit">
           <input
             className="machine-edit-input"
             value={name}
@@ -88,16 +86,16 @@ const MachineCard = ({ machine }: MachineCardProps) => {
             value={imageUrl}
             onChange={(e) => setImageUrl(e.target.value)}
           />
-        </>
+        </div>
       ) : (
-        <>
+        <div key="view">
           <h3 className="machine-name">{name}</h3>
           <img src={imageUrl} alt={name} className="machine-image" />
           <p className="machine-description">{description}</p>
-        </>
+        </div>
       )}
 
-      {isAdmin && (
+      {user && (
         <div className="machine-actions">
           <button onClick={handleEdit} className="btn-edit">
             {editing ? "Save" : "Edit"}

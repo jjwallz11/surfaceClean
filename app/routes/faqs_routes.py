@@ -27,7 +27,7 @@ async def get_live_faqs(db: AsyncSession = Depends(get_async_db)):
     )
     return result.scalars().all()
 
-@router.get("/", response_model=List[FAQCreate])
+@router.get("/", response_model=List[FAQResponse])
 async def get_faqs(db: AsyncSession = Depends(get_async_db)):
     result = await db.execute(select(FAQ))
     return result.scalars().all()
@@ -46,7 +46,7 @@ async def create_faq(
     await db.refresh(faq)
     return faq
 
-@router.patch("/{faq_id}", response_model=FAQCreate)
+@router.patch("/{faq_id}", response_model=FAQUpdate)
 async def update_faq(
     request: Request,
     faq_id: int,

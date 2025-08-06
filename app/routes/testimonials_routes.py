@@ -12,7 +12,7 @@ from typing import List
 
 router = APIRouter()
 
-@router.get("/", response_model=List[TestimonialCreate])
+@router.get("/", response_model=List[TestimonialResponse])
 async def get_testimonials(db: AsyncSession = Depends(get_async_db)):
     result = await db.execute(select(Testimonial))
     return result.scalars().all()
@@ -31,7 +31,7 @@ async def create_testimonial(
     await db.refresh(testimonial)
     return testimonial
 
-@router.patch("/{testimonial_id}", response_model=TestimonialResponse)
+@router.patch("/{testimonial_id}", response_model=TestimonialUpdate)
 async def update_testimonial(
     request: Request,
     testimonial_id: int,

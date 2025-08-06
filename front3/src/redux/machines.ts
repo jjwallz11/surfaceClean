@@ -81,7 +81,10 @@ export const getMachines = () => async (dispatch: any) => {
   try {
     const res = await csrfFetch('/api/machines');
     const data = await res.json();
-    dispatch(loadMachines(data.machines));
+
+    console.log('Fetched machines:', data);
+    
+    dispatch(loadMachines(data));
   } catch (err) {
     console.error('Failed to fetch machines:', err);
   } finally {

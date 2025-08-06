@@ -12,7 +12,7 @@ from typing import List
 
 router = APIRouter()
 
-@router.get("/", response_model=List[MachineCreate])
+@router.get("/", response_model=List[MachineResponse])
 async def get_machines(db: AsyncSession = Depends(get_async_db)):
     result = await db.execute(select(Machine))
     return result.scalars().all()
@@ -31,7 +31,7 @@ async def create_machine(
     await db.refresh(machine)
     return machine
 
-@router.patch("/{machine_id}", response_model=MachineResponse)
+@router.patch("/{machine_id}", response_model=MachineUpdate)
 async def update_machine(
     request: Request,
     machine_id: int = Path(..., gt=0),
