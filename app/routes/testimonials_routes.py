@@ -1,6 +1,6 @@
 # app/api/testimonials_routes.py
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Path, Body, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from utils.db import get_async_db
@@ -34,8 +34,8 @@ async def create_testimonial(
 @router.patch("/{testimonial_id}", response_model=TestimonialUpdate)
 async def update_testimonial(
     request: Request,
-    testimonial_id: int,
-    data: TestimonialUpdate,
+    testimonial_id: int = Path(..., gt=0),
+    data: TestimonialUpdate = Body(),
     db: AsyncSession = Depends(get_async_db),
     user=Depends(get_current_user)
 ):
