@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 import { thunkLogin } from "../../redux/session";
 import "./LoginModal.css";
@@ -9,7 +10,7 @@ import "./LoginModal.css";
 function LoginModal() {
   const dispatch = useDispatch<any>();
   const { closeModal } = useModal();
-
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -25,6 +26,7 @@ function LoginModal() {
       setErrors(serverResponse);
     } else {
       closeModal();
+      navigate("/");
     }
   };
 
