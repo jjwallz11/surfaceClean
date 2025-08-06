@@ -10,7 +10,9 @@ import "./MachineCard.css";
 interface Machine {
   id: number;
   name: string;
+  price: number;
   description: string;
+  hours_used: number;
   image_url: string;
   created_at: string;
 }
@@ -28,14 +30,18 @@ const MachineCard = ({ machine }: MachineCardProps) => {
 
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState(machine.name);
+  const [price, setPrice] = useState(machine.price);
   const [description, setDescription] = useState(machine.description);
+  const [hoursUsed, setHoursUsed] = useState(machine.hours_used);
   const [imageUrl, setImageUrl] = useState(machine.image_url);
   const [showConfirm, setShowConfirm] = useState(false);
 
   useEffect(() => {
     if (updatedMachine) {
       setName(updatedMachine.name);
+      setPrice(updatedMachine.price);
       setDescription(updatedMachine.description);
+      setHoursUsed(updatedMachine.hours_used);
       setImageUrl(updatedMachine.image_url);
     }
   }, [updatedMachine]);
@@ -43,14 +49,20 @@ const MachineCard = ({ machine }: MachineCardProps) => {
   const handleEdit = async () => {
     if (
       editing &&
-      (name !== machine.name ||
+      (
+        name !== machine.name ||
+        price !== machine.price ||
         description !== machine.description ||
-        imageUrl !== machine.image_url)
+        hoursUsed !== machine.hours_used ||
+        imageUrl !== machine.image_url
+      )
     ) {
       await dispatch(
         machineActions.editMachine(machine.id, {
           name,
+          price,
           description,
+          hours_used: hoursUsed,
           image_url: imageUrl,
         })
       );
@@ -76,6 +88,13 @@ const MachineCard = ({ machine }: MachineCardProps) => {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
+          <input
+            className="machine-edit-input"
+            type="number"
+            value={price}
+            onChange={(e) => setPrice(Number(e.target.value))}
+            placeholder="Price"
+          />
           <textarea
             className="machine-edit-textarea"
             value={description}
@@ -83,8 +102,16 @@ const MachineCard = ({ machine }: MachineCardProps) => {
           />
           <input
             className="machine-edit-input"
+            type="number"
+            value={hoursUsed}
+            onChange={(e) => setHoursUsed(Number(e.target.value))}
+            placeholder="Hours Used"
+          />
+          <input
+            className="machine-edit-input"
             value={imageUrl}
             onChange={(e) => setImageUrl(e.target.value)}
+            placeholder="Image URL"
           />
         </div>
       ) : (
@@ -92,6 +119,8 @@ const MachineCard = ({ machine }: MachineCardProps) => {
           <h3 className="machine-name">{name}</h3>
           <img src={imageUrl} alt={name} className="machine-image" />
           <p className="machine-description">{description}</p>
+          <p className="machine-price">Price: ${price}</p>
+          <p className="machine-hours">Hours Used: {hoursUsed}</p>
         </div>
       )}
 

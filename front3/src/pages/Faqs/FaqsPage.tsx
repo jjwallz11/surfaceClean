@@ -3,19 +3,24 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { getAllFaqs } from "../../redux/faqs";
+import { getAllFaqs, getLiveFaqs } from "../../redux/faqs";
 import FAQCard from "../../components/FAQCard/FAQCard";
-import "./FAQsPage.css";
+import "./FaqsPage.css";
 
 const FAQsPage = () => {
   const dispatch = useDispatch<any>();
   const faqs = useSelector((state: RootState) =>
     Object.values(state.faqs.all)
   );
+  const user = useSelector((state: RootState) => state.session.user);
 
   useEffect(() => {
-    dispatch(getAllFaqs());
-  }, [dispatch]);
+    if (user) {
+      dispatch(getAllFaqs());
+    } else {
+      dispatch(getLiveFaqs());
+    }
+  }, [dispatch, user]);
 
   return (
     <div className="faqs-page">

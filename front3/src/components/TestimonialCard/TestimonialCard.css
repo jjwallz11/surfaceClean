@@ -1,71 +1,57 @@
-/* components/TestimonialCard/TestimonialCard.css */
+/* TestimonialCard.css */
 
 .testimonial-card {
-  border: 1px solid #ccc;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  margin: 1rem 0;
-  background-color: #fff;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+  background-color: #FFE8D1; /* Cream */
+  border: 2px solid #568EA3; /* Steel Blue */
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
 }
 
-.testimonial-stars {
-  font-size: 1.25rem;
-  color: #f5a623; /* gold/yellow */
-  margin-bottom: 0.25rem;
+.testimonial-card:hover {
+  transform: scale(1.02);
 }
 
 .testimonial-author {
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   font-weight: bold;
-  color: #072460;
-  margin-bottom: 0.5rem;
+  color: #568EA3; /* Steel Blue */
+  margin-bottom: 10px;
 }
 
 .testimonial-content {
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
-  white-space: pre-wrap;
+  font-size: 1.1rem;
+  color: #0A3161; /* Old Glory Blue */
 }
 
 .testimonial-notables {
+  margin-top: 15px;
   font-size: 0.9rem;
-  color: #666;
-  font-style: italic;
-  margin-bottom: 0.5rem;
+  color: #AE2335; 
+  text-align: left;
 }
 
 .testimonial-actions {
   display: flex;
   gap: 0.5rem;
-}
-
-.testimonial-edit-input,
-.testimonial-edit-textarea {
-  width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 0.5rem;
-  border-radius: 0.25rem;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-}
-
-.testimonial-edit-textarea {
-  min-height: 100px;
-  resize: vertical;
+  margin-top: 1rem;
 }
 
 .btn-edit,
 .btn-delete {
+  flex: 1;
   padding: 0.5rem 1rem;
   font-weight: bold;
   border: none;
   border-radius: 0.25rem;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .btn-edit {
-  background-color: #072460;
+  background-color: #568EA3;
   color: #fff;
 }
 
@@ -80,4 +66,19 @@
 
 .btn-delete:hover {
   background-color: #b31942;
+}
+
+.testimonial-input,
+.testimonial-textarea {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.testimonial-textarea {
+  min-height: 100px;
+  resize: vertical;
 }

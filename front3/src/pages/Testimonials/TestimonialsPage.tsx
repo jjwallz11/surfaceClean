@@ -16,9 +16,9 @@ const TestimonialsPage = () => {
   }, [dispatch]);
 
   return (
-    <div className="testimonials-page-container">
+    <div className="testimonials-page">
       <h1>Customer Testimonials</h1>
-      <div className="testimonials-grid">
+      <div className="testimonial-list">
         {testimonials.map((testimonial) => (
           <TestimonialCard key={testimonial.id} testimonial={testimonial} />
         ))}
