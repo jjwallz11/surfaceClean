@@ -7,6 +7,7 @@ import FaqsPage from "../pages/Faqs/FaqsPage";
 import TestimonialsPage from "../pages/Testimonials/TestimonialsPage";
 import AboutPage from "../pages/About/AboutPage";
 import ContactPage from "../pages/Contact/ContactPage";
+import AdminHomePage from "../pages/AdminHomePage/AdminHomePage";
 
 export const router = createBrowserRouter([
   {
@@ -14,11 +15,11 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <MachinesPage />, // public landing page
+        element: <HomePage />, // public landing page
       },
       {
         path: "/admin",
-        element: <HomePage />, // Dave-only admin access
+        element: <AdminHomePage />, // Dave-only admin access
       },
       {
         path: "/faqs",

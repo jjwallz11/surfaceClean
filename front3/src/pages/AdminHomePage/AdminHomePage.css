@@ -1,0 +1,36 @@
+/* src/pages/AdminHomePage/AdminHomePage.css */
+
+.admin-home-container {
+  text-align: center;
+  padding: 2rem;
+}
+
+.admin-home-heading {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #568EA3; /* Steel Blue */
+}
+
+.admin-home-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.admin-home-button {
+  padding: 1rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+  background-color: #568EA3; /* Steel Blue */
+  color: #FFFFFF; /* White */
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.admin-home-button:hover {
+  background-color: #3D6F82; /* Darker Steel Blue */
+}

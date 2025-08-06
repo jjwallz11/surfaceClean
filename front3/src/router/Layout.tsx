@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ModalProvider, Modal } from "../context/Modal";
 import { RootState } from "../redux/store";
@@ -9,6 +9,8 @@ import Navigation from "../components/Navigation/Navigation";
 export default function Layout() {
   const dispatch = useDispatch<any>();
   const user = useSelector((state: RootState) => state.session.user);
+  const location = useLocation();
+  const isAdminRoute = location.pathname === "/admin";
 
   useEffect(() => {
     dispatch(getCurrentUser());

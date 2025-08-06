@@ -13,10 +13,10 @@ function Navigation() {
   const pageTitles: Record<string, string> = {
     "/": "Surface Clean",
     "/admin": "🔒 Admin",
-    "/machines": "🧹 Machines",
-    "/images": "🖼️ Images",
-    "/testimonials": "⭐ Testimonials",
-    "/faqs": "❓ FAQs",
+    "/machines": "Machines",
+    "/images": "Images",
+    "/testimonials": "Testimonials",
+    "/faqs": "FAQs",
     "/about": "About",
     "/contact": "Contact",
   };
@@ -26,7 +26,7 @@ function Navigation() {
   return (
     <nav className="navbar">
       <button className="brand-btn" onClick={() => navigate("/")}>
-        <img src="/logo192.png" alt="Surface Clean" className="brand-logo" />
+        <img src="/favicon.png" alt="Surface Clean" className="brand-logo" />
       </button>
 
       <h1 className="nav-title">{currentTitle}</h1>
@@ -62,6 +62,14 @@ function Navigation() {
             About
           </NavLink>
         </li>
+
+        {user && (
+          <li>
+            <NavLink to="/admin" className="nav-link">
+              Admin
+            </NavLink>
+          </li>
+        )}
       </ul>
     </nav>
   );

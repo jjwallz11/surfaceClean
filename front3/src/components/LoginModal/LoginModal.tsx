@@ -26,7 +26,7 @@ function LoginModal() {
       setErrors(serverResponse);
     } else {
       closeModal();
-      navigate("/");
+      navigate("/admin");
     }
   };
 
