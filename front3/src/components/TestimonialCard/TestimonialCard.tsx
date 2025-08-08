@@ -8,7 +8,7 @@ import "./TestimonialCard.css";
 interface Testimonial {
   id: number;
   author_name: string;
-  stars: string;
+  stars: number;
   notables?: string;
   content: string;
   created_at: string;
@@ -85,7 +85,7 @@ const TestimonialCard = ({ testimonial }: TestimonialCardProps) => {
           <input
             className="testimonial-input"
             value={stars}
-            onChange={(e) => setStars(e.target.value)}
+            onChange={(e) => setStars(Number(e.target.value))}
             placeholder="Stars"
           />
           <input
@@ -112,10 +112,10 @@ const TestimonialCard = ({ testimonial }: TestimonialCardProps) => {
       {user && (
         <div className="testimonial-actions">
           <button onClick={handleEdit} className="btn-edit">
-            {editing ? "Save" : "Edit"}
+            {editing ? "Save" : "EDIT"}
           </button>
           <button onClick={handleDelete} className="btn-delete">
-            Delete
+            DELETE
           </button>
         </div>
       )}

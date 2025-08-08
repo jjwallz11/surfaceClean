@@ -81,10 +81,10 @@ const FAQCard = ({ faq }: FAQCardProps) => {
       {user && (
         <div className="faq-actions">
           <button onClick={handleEdit} className="btn-edit">
-            {editing ? "Save" : "Edit"}
+            {editing ? "Save" : "EDIT"}
           </button>
           <button onClick={handleDelete} className="btn-delete">
-            Delete
+            DELETE
           </button>
         </div>
       )}

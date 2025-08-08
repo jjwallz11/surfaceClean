@@ -1,6 +1,7 @@
 // front3/src/components/MachineCard/MachineCard.tsx
 
 import { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { machineActions } from "../../redux";
@@ -12,7 +13,6 @@ interface Machine {
   name: string;
   price: number;
   condition: string;
-  description: string;
   hours_used: number;
   image_url: string;
   created_at: string;
@@ -33,7 +33,6 @@ const MachineCard = ({ machine }: MachineCardProps) => {
   const [name, setName] = useState(machine.name);
   const [price, setPrice] = useState(machine.price);
   const [condition, setCondition] = useState(machine.condition);
-  const [description, setDescription] = useState(machine.description);
   const [hoursUsed, setHoursUsed] = useState(machine.hours_used);
   const [imageUrl, setImageUrl] = useState(machine.image_url);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -43,7 +42,6 @@ const MachineCard = ({ machine }: MachineCardProps) => {
       setName(updatedMachine.name);
       setPrice(updatedMachine.price);
       setCondition(updatedMachine.condition);
-      setDescription(updatedMachine.description);
       setHoursUsed(updatedMachine.hours_used);
       setImageUrl(updatedMachine.image_url);
     }
@@ -55,7 +53,6 @@ const MachineCard = ({ machine }: MachineCardProps) => {
       (name !== machine.name ||
         price !== machine.price ||
         condition !== machine.condition ||
-        description !== machine.description ||
         hoursUsed !== machine.hours_used ||
         imageUrl !== machine.image_url)
     ) {
@@ -64,7 +61,6 @@ const MachineCard = ({ machine }: MachineCardProps) => {
           name,
           price,
           condition,
-          description,
           hours_used: hoursUsed,
           image_url: imageUrl,
         })
@@ -104,11 +100,6 @@ const MachineCard = ({ machine }: MachineCardProps) => {
             onChange={(e) => setCondition(e.target.value)}
             placeholder="Condition"
           />
-          <textarea
-            className="machine-edit-textarea"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
           <input
             className="machine-edit-input"
             type="number"
@@ -124,25 +115,32 @@ const MachineCard = ({ machine }: MachineCardProps) => {
           />
         </div>
       ) : (
-        <div key="view">
-          <h3 className="machine-name">{name}</h3>
-          <img src={imageUrl} alt={name} className="machine-image" />
-          <p className="machine-description">{description}</p>
-          <p className="machine-price">Price: ${price}</p>
-          <p className="machine-condition">
-            <strong>Condition:</strong> {condition}
-          </p>
-          <p className="machine-hours">Hours Used: {hoursUsed}</p>
-        </div>
+        <NavLink
+          to={`/machines/${machine.id}`}
+          key="view"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <div className="machine-details">
+            <h3 className="machine-name">{name}</h3>
+            <div className="machine-image-container">
+              <img src={imageUrl} alt={name} className="machine-image" />
+            </div>
+            <p className="machine-price">Price: ${price}</p>
+            <p className="machine-condition">
+              <strong>Condition:</strong> {condition}
+            </p>
+            <p className="machine-hours">Hours Used: {hoursUsed}</p>
+          </div>
+        </NavLink>
       )}
 
       {user && (
         <div className="machine-actions">
           <button onClick={handleEdit} className="btn-edit">
-            {editing ? "Save" : "Edit"}
+            {editing ? "Save" : "EDIT"}
           </button>
           <button onClick={handleDelete} className="btn-delete">
-            Delete
+            DELETE
           </button>
         </div>
       )}

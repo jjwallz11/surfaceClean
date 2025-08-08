@@ -4,7 +4,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { machineActions } from "../../redux";
-import { NavLink } from "react-router-dom";
+import MachineCard from "../../components/MachineCard/MachineCard";
+import "./MachinesPage.css";
 
 const MachinesPage = () => {
   const dispatch = useDispatch<any>();
@@ -17,22 +18,12 @@ const MachinesPage = () => {
   }, [dispatch]);
 
   return (
-    <div>
+    <div className="machines-page">
       <h1>Available Machines</h1>
-      <ul>
+      <ul className="machine-list">
         {machines.map((machine) => (
           <li key={machine.id}>
-            <NavLink to={`/machines/${machine.id}`}>
-              <img
-                src={machine.image_url || "/placeholder.jpg"}
-                alt={machine.name}
-              />
-              <div>
-                <h3>{machine.name}</h3>
-                <p>${machine.price}</p>
-                <p>{machine.condition}</p>
-              </div>
-            </NavLink>
+            <MachineCard machine={machine} />
           </li>
         ))}
       </ul>

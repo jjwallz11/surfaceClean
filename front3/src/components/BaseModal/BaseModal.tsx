@@ -25,10 +25,10 @@ const BaseModal = ({
         {showButtons && (
           <div className="modal-buttons">
             <button className="btn-edit" onClick={onSave}>
-              Save
+              SAVE
             </button>
             <button className="btn-delete" onClick={onClose}>
-              Cancel
+              CANCEL
             </button>
           </div>
         )}
