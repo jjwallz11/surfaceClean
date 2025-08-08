@@ -3,9 +3,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { getMachines } from "../../redux/machines";
-import MachineCard from "../../components/MachineCard/MachineCard";
-import "./MachinesPage.css";
+import { machineActions } from "../../redux";
+import { NavLink } from "react-router-dom";
 
 const MachinesPage = () => {
   const dispatch = useDispatch<any>();
@@ -14,17 +13,29 @@ const MachinesPage = () => {
   );
 
   useEffect(() => {
-    dispatch(getMachines());
+    dispatch(machineActions.getMachines());
   }, [dispatch]);
 
   return (
-    <div className="machines-page">
-      <h1>Machines</h1>
-      <div className="machine-list">
+    <div>
+      <h1>Available Machines</h1>
+      <ul>
         {machines.map((machine) => (
-          <MachineCard key={machine.id} machine={machine} />
+          <li key={machine.id}>
+            <NavLink to={`/machines/${machine.id}`}>
+              <img
+                src={machine.image_url || "/placeholder.jpg"}
+                alt={machine.name}
+              />
+              <div>
+                <h3>{machine.name}</h3>
+                <p>${machine.price}</p>
+                <p>{machine.condition}</p>
+              </div>
+            </NavLink>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };

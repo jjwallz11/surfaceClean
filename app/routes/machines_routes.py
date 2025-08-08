@@ -17,6 +17,19 @@ async def get_machines(db: AsyncSession = Depends(get_async_db)):
     result = await db.execute(select(Machine))
     return result.scalars().all()
 
+@router.get("/{machine_id}", response_model=MachineResponse)
+async def get_machine(
+    machine_id: int = Path(..., gt=0),
+    db: AsyncSession = Depends(get_async_db)
+):
+    result = await db.execute(select(Machine).where(Machine.id == machine_id))
+    machine = result.scalar_one_or_none()
+
+    if not machine:
+        raise HTTPException(status_code=404, detail="Machine not found")
+
+    return machine
+
 @router.post("/", response_model=MachineCreate)
 async def create_machine(
     request: Request,

@@ -6,6 +6,7 @@ interface Machine {
   id: number;
   name: string;
   price: number;
+  condition: string;
   description: string;
   hours_used: number;
   image_url: string;
@@ -14,11 +15,19 @@ interface Machine {
 
 interface MachinesState {
   all: Record<number, Machine>;
+  single: {
+    details: Machine | null;
+  };
 }
 
 interface LoadMachinesAction {
   type: typeof LOAD_MACHINES;
   payload: Machine[];
+}
+
+interface LoadSingleMachineAction {
+  type: typeof LOAD_SINGLE_MACHINE;
+  payload: Machine;
 }
 
 interface AddMachineAction {
@@ -38,22 +47,31 @@ interface DeleteMachineAction {
 
 type MachinesActionTypes =
   | LoadMachinesAction
+  | LoadSingleMachineAction
   | AddMachineAction
   | UpdateMachineAction
   | DeleteMachineAction;
 
 /******************************* ACTION TYPES *******************************************/
 
-const LOAD_MACHINES = 'machines/load';
-const ADD_MACHINE = 'machines/add';
-const UPDATE_MACHINE = 'machines/update';
-const DELETE_MACHINE = 'machines/delete';
+const LOAD_MACHINES = "machines/load";
+const LOAD_SINGLE_MACHINE = "machines/loadSingle";
+const ADD_MACHINE = "machines/add";
+const UPDATE_MACHINE = "machines/update";
+const DELETE_MACHINE = "machines/delete";
 
 /******************************* ACTION CREATORS *******************************************/
 
 export const loadMachines = (machines: Machine[]): LoadMachinesAction => ({
   type: LOAD_MACHINES,
   payload: machines,
+});
+
+export const loadSingleMachine = (
+  machine: Machine
+): LoadSingleMachineAction => ({
+  type: LOAD_SINGLE_MACHINE,
+  payload: machine,
 });
 
 export const addMachine = (machine: Machine): AddMachineAction => ({
@@ -73,55 +91,73 @@ export const deleteMachine = (id: number): DeleteMachineAction => ({
 
 /******************************* THUNKS *******************************************/
 
-import { csrfFetch } from './csrf';
-import { setLoading } from './session';
+import { csrfFetch } from "./csrf";
+import { setLoading } from "./session";
 
 // Get all machines
 export const getMachines = () => async (dispatch: any) => {
   try {
-    const res = await csrfFetch('/api/machines');
+    const res = await csrfFetch("/api/machines");
     const data = await res.json();
 
-    console.log('Fetched machines:', data);
-    
+    console.log("Fetched machines:", data);
+
     dispatch(loadMachines(data));
   } catch (err) {
-    console.error('Failed to fetch machines:', err);
+    console.error("Failed to fetch machines:", err);
   } finally {
     dispatch(setLoading(false));
   }
 };
 
-// Add machine
-export const createMachine = (machineData: Partial<Machine>) => async (dispatch: any) => {
-  const res = await csrfFetch('/api/machines', {
-    method: 'POST',
-    body: JSON.stringify(machineData),
-  });
+// Get a single machine
+export const getMachineDetails =
+  (id: string | number) => async (dispatch: any) => {
+    try {
+      const res = await csrfFetch(`/api/machines/${id}`);
+      if (!res.ok) throw new Error("Machine not found");
 
-  if (res.ok) {
-    const newMachine = await res.json();
-    dispatch(addMachine(newMachine));
-  }
-};
+      const data = await res.json();
+      console.log("Fetched machine details:", data);
+
+      dispatch(loadSingleMachine(data));
+    } catch (err) {
+      console.error("Failed to fetch machine:", err);
+    }
+  };
+
+// Add machine
+export const createMachine =
+  (machineData: Partial<Machine>) => async (dispatch: any) => {
+    const res = await csrfFetch("/api/machines", {
+      method: "POST",
+      body: JSON.stringify(machineData),
+    });
+
+    if (res.ok) {
+      const newMachine = await res.json();
+      dispatch(addMachine(newMachine));
+    }
+  };
 
 // Update machine
-export const editMachine = (id: number, updates: Partial<Machine>) => async (dispatch: any) => {
-  const res = await csrfFetch(`/api/machines/${id}`, {
-    method: 'PATCH',
-    body: JSON.stringify(updates),
-  });
+export const editMachine =
+  (id: number, updates: Partial<Machine>) => async (dispatch: any) => {
+    const res = await csrfFetch(`/api/machines/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(updates),
+    });
 
-  if (res.ok) {
-    const updated = await res.json();
-    dispatch(updateMachine(updated));
-  }
-};
+    if (res.ok) {
+      const updated = await res.json();
+      dispatch(updateMachine(updated));
+    }
+  };
 
 // Delete machine (from DB and Cloudinary)
 export const removeMachine = (id: number) => async (dispatch: any) => {
   const res = await csrfFetch(`/api/machines/${id}`, {
-    method: 'DELETE',
+    method: "DELETE",
   });
 
   if (res.ok) {
@@ -133,6 +169,9 @@ export const removeMachine = (id: number) => async (dispatch: any) => {
 
 const initialState: MachinesState = {
   all: {},
+  single: {
+    details: null,
+  },
 };
 
 export default function machinesReducer(
@@ -145,9 +184,20 @@ export default function machinesReducer(
       action.payload.forEach((m) => (newAll[m.id] = m));
       return { ...state, all: newAll };
     }
+    case LOAD_SINGLE_MACHINE:
+      return {
+        ...state,
+        single: {
+          ...state.single,
+          details: action.payload,
+        },
+      };
     case ADD_MACHINE:
     case UPDATE_MACHINE:
-      return { ...state, all: { ...state.all, [action.payload.id]: action.payload } };
+      return {
+        ...state,
+        all: { ...state.all, [action.payload.id]: action.payload },
+      };
     case DELETE_MACHINE: {
       const newAll = { ...state.all };
       delete newAll[action.payload];

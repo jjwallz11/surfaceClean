@@ -20,6 +20,7 @@ class MachineResponse(BaseModel):
     id: int
     name: str
     price: float
+    condition: str
     description: Optional[str] = None
     hours_used: Optional[Decimal] = None
 

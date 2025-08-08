@@ -3,7 +3,7 @@
 interface Testimonial {
   id: number;
   author_name: string;
-  stars: string;
+  stars: number;
   notables?: string;
   content: string;
   created_at: string;

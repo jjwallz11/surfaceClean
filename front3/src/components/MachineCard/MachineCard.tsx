@@ -11,6 +11,7 @@ interface Machine {
   id: number;
   name: string;
   price: number;
+  condition: string;
   description: string;
   hours_used: number;
   image_url: string;
@@ -31,6 +32,7 @@ const MachineCard = ({ machine }: MachineCardProps) => {
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState(machine.name);
   const [price, setPrice] = useState(machine.price);
+  const [condition, setCondition] = useState(machine.condition);
   const [description, setDescription] = useState(machine.description);
   const [hoursUsed, setHoursUsed] = useState(machine.hours_used);
   const [imageUrl, setImageUrl] = useState(machine.image_url);
@@ -40,6 +42,7 @@ const MachineCard = ({ machine }: MachineCardProps) => {
     if (updatedMachine) {
       setName(updatedMachine.name);
       setPrice(updatedMachine.price);
+      setCondition(updatedMachine.condition);
       setDescription(updatedMachine.description);
       setHoursUsed(updatedMachine.hours_used);
       setImageUrl(updatedMachine.image_url);
@@ -49,18 +52,18 @@ const MachineCard = ({ machine }: MachineCardProps) => {
   const handleEdit = async () => {
     if (
       editing &&
-      (
-        name !== machine.name ||
+      (name !== machine.name ||
         price !== machine.price ||
+        condition !== machine.condition ||
         description !== machine.description ||
         hoursUsed !== machine.hours_used ||
-        imageUrl !== machine.image_url
-      )
+        imageUrl !== machine.image_url)
     ) {
       await dispatch(
         machineActions.editMachine(machine.id, {
           name,
           price,
+          condition,
           description,
           hours_used: hoursUsed,
           image_url: imageUrl,
@@ -95,6 +98,12 @@ const MachineCard = ({ machine }: MachineCardProps) => {
             onChange={(e) => setPrice(Number(e.target.value))}
             placeholder="Price"
           />
+          <input
+            className="machine-edit-input"
+            value={condition}
+            onChange={(e) => setCondition(e.target.value)}
+            placeholder="Condition"
+          />
           <textarea
             className="machine-edit-textarea"
             value={description}
@@ -120,6 +129,9 @@ const MachineCard = ({ machine }: MachineCardProps) => {
           <img src={imageUrl} alt={name} className="machine-image" />
           <p className="machine-description">{description}</p>
           <p className="machine-price">Price: ${price}</p>
+          <p className="machine-condition">
+            <strong>Condition:</strong> {condition}
+          </p>
           <p className="machine-hours">Hours Used: {hoursUsed}</p>
         </div>
       )}

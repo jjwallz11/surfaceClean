@@ -11,6 +11,7 @@ class Machine(Base):
     name = Column(String, nullable=False)
     description = Column(Text)
     price = Column(Float, nullable=False)
+    condition = Column(String, nullable=False)
     hours_used = Column(Numeric(10,2), nullable=True)
 
     images = relationship("Image", back_populates="machine")

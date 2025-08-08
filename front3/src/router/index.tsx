@@ -2,6 +2,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "./Layout";
 import MachinesPage from "../pages/Machines/MachinesPage";
+import MachineDetailsPage from "../pages/MachineDetailsPage";
 import HomePage from "../pages/Home/HomePage";
 import FaqsPage from "../pages/Faqs/FaqsPage";
 import TestimonialsPage from "../pages/Testimonials/TestimonialsPage";
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
       {
         path: "/machines",
         element: <MachinesPage />,
+      },
+      {
+        path: "/machines/:machineId",
+        element: <MachineDetailsPage />,
       },
       {
         path: "/testimonials",

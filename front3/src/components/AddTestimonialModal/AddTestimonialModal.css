@@ -1,0 +1,12 @@
+.star-icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  margin-right: 4px;
+}
+
+.star-select-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
