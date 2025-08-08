@@ -73,41 +73,35 @@ export const getCurrentUser = () => async (dispatch: any) => {
 // Login
 export const thunkLogin = (credentials: { email: string; password: string }) => async (dispatch: any) => {
   dispatch(setLoading(true));
-  const response = await fetch('/api/session/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(credentials),
-  });
-
-  if (response.ok) {
-    const data = await response.json();
+  try {
+    const res = await csrfFetch('/api/session/login', {
+      method: 'POST',
+      body: JSON.stringify(credentials),
+    });
+    const data = await res.json();
     dispatch(setUser(data));
-  } else if (response.status < 500) {
-    const errorMessages = await response.json();
-    dispatch(setLoading(false));
-    return errorMessages;
-  } else {
-    dispatch(setLoading(false));
+  } catch (err) {
+    if (err instanceof Response && err.status < 500) {
+      const msgs = await err.json();
+      return msgs;
+    }
     return { server: 'Something went wrong. Please try again' };
+  } finally {
+    dispatch(setLoading(false));
   }
-
-  dispatch(setLoading(false));
 };
 
 // Logout
 export const thunkLogout = () => async (dispatch: any) => {
   dispatch(setLoading(true));
-
-  await fetch("/api/session/logout", {
-    method: "POST",
-    credentials: "include", // include cookies in request
-  });
-
-  // Frontend can only remove non-httpOnly cookies like csrf_token
-  document.cookie = "csrf_token=; Max-Age=0; path=/";
-
-  dispatch(removeUser());
-  dispatch(setLoading(false));
+  try {
+    await csrfFetch('/api/session/logout', { method: 'POST' });
+    // Clean up non-httpOnly cookie if present (safe)
+    document.cookie = 'csrf_token=; Max-Age=0; path=/';
+    dispatch(removeUser());
+  } finally {
+    dispatch(setLoading(false));
+  }
 };
 
 /******************************* REDUCER *******************************************/

@@ -27,9 +27,9 @@ const MachinesPage = () => {
       </div>
 
       <ul className="machine-list">
-        {machines.map((machine) => (
-          <li key={machine.id}>
-            <MachineCard machine={machine} />
+        {machines.map((m) => (
+          <li key={`machine-${m.id}`}>
+            <MachineCard machine={m} />
           </li>
         ))}
       </ul>

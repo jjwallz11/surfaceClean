@@ -143,14 +143,27 @@ export const createMachine =
 // Update machine
 export const editMachine =
   (id: number, updates: Partial<Machine>) => async (dispatch: any) => {
-    const res = await csrfFetch(`/api/machines/${id}`, {
-      method: "PATCH",
-      body: JSON.stringify(updates),
-    });
+    try {
+      const res = await csrfFetch(`/api/machines/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify(updates),
+      });
 
-    if (res.ok) {
-      const updated = await res.json();
-      dispatch(updateMachine(updated));
+      // If the backend returns the updated machine, use it
+      const data = await res.json().catch(() => null);
+      console.log("PATCH /api/machines/:id →", data);
+
+      if (data && data.id) {
+        dispatch(updateMachine(data));
+      } else {
+        // If server doesn't return the record, keep UI snappy but then sync
+        dispatch(updateMachine({ id, ...(updates as any) }));
+      }
+
+      // 🔁 Always sync from server to confirm it actually persisted
+      await dispatch(getMachines());
+    } catch (err) {
+      console.error("editMachine failed:", err);
     }
   };
 

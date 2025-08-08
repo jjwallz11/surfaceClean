@@ -1,31 +1,38 @@
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 interface CsrfFetchOptions extends RequestInit {
-  headers?: HeadersInit & {
-    'X-CSRF-Token'?: string;
-  };
+  headers?: HeadersInit & { "X-CSRF-Token"?: string };
 }
 
 export async function csrfFetch(url: string, options: CsrfFetchOptions = {}) {
-  options.method = options.method || 'GET';
-  options.headers = options.headers || {};
+  const opts: CsrfFetchOptions = {
+    method: options.method || "GET",
+    credentials: "include",
+    ...options,
+  };
 
-  if (options.method.toUpperCase() !== 'GET') {
-    if (!options.headers['Content-Type']) {
-      options.headers['Content-Type'] = 'application/json';
+  // Normalize headers
+  const headers = new Headers(opts.headers || {});
+  const isGet = (opts.method as string).toUpperCase() === "GET";
+
+  if (!isGet) {
+    // Don't force JSON for FormData
+    const isFormData = typeof FormData !== "undefined" && opts.body instanceof FormData;
+    if (!isFormData && !headers.has("Content-Type")) {
+      headers.set("Content-Type", "application/json");
     }
 
-    const csrfToken = Cookies.get('csrf_token');
-    if (csrfToken) {
-      options.headers['X-CSRF-Token'] = csrfToken;
-    }
+    // Be flexible on cookie name
+    const token =
+      Cookies.get("csrf_token") ||
+      Cookies.get("XSRF-TOKEN") ||
+      Cookies.get("csrf-token");
+    if (token) headers.set("X-CSRF-Token", token);
   }
 
-  options.credentials = 'include';
+  opts.headers = headers;
 
-  const res = await window.fetch(url, options);
-
+  const res = await window.fetch(url, opts);
   if (res.status >= 400) throw res;
-
   return res;
 }
