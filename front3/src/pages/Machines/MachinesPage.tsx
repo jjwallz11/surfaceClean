@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { machineActions } from "../../redux";
 import MachineCard from "../../components/MachineCard/MachineCard";
+import AddMachineModal from "../../components/AddMachineModal/AddMachineModal";
 import "./MachinesPage.css";
 
 const MachinesPage = () => {
@@ -20,6 +21,11 @@ const MachinesPage = () => {
   return (
     <div className="machines-page">
       <h1>Available Machines</h1>
+
+      <div className="add-machine-container">
+        <AddMachineModal />
+      </div>
+
       <ul className="machine-list">
         {machines.map((machine) => (
           <li key={machine.id}>

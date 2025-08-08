@@ -2,27 +2,27 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import * as machineActions from "../../redux/machines";
 import BaseModal from "../BaseModal/BaseModal";
-import "../BaseModal/BaseModal.css"
+import "../BaseModal/BaseModal.css";
 
 const AddMachineModal = () => {
   const dispatch = useDispatch<any>();
   const [showModal, setShowModal] = useState(false);
 
   const [name, setName] = useState("");
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState("");
   const [condition, setCondition] = useState("");
   const [description, setDescription] = useState("");
-  const [hoursUsed, setHoursUsed] = useState(0);
+  const [hoursUsed, setHoursUsed] = useState("");
   const [imageUrl, setImageUrl] = useState("");
 
   const handleSubmit = () => {
     dispatch(
       machineActions.createMachine({
         name,
-        price,
+        price: parseFloat(price),
         condition,
         description,
-        hours_used: hoursUsed,
+        hours_used: parseInt(hoursUsed),
         image_url: imageUrl,
       })
     );
@@ -31,8 +31,9 @@ const AddMachineModal = () => {
 
   return (
     <>
-      <button onClick={() => setShowModal(true)} className="btn-add">
-        Add Machine
+      {/* match FAQ button sizing/styling */}
+      <button onClick={() => setShowModal(true)} className="add-machine-btn">
+        ADD MACHINE
       </button>
 
       {showModal && (
@@ -52,7 +53,7 @@ const AddMachineModal = () => {
             placeholder="Price"
             type="number"
             value={price}
-            onChange={(e) => setPrice(parseFloat(e.target.value))}
+            onChange={(e) => setPrice(e.target.value)}
           />
           <input
             className="modal-input"
@@ -71,7 +72,7 @@ const AddMachineModal = () => {
             placeholder="Hours Used"
             type="number"
             value={hoursUsed}
-            onChange={(e) => setHoursUsed(parseInt(e.target.value))}
+            onChange={(e) => setHoursUsed(e.target.value)}
           />
           <input
             className="modal-input"
