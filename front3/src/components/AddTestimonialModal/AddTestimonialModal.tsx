@@ -50,7 +50,7 @@ const AddTestimonialModal = () => {
   return (
     <>
       <button onClick={() => setShowModal(true)} className="btn-add">
-        Add Testimonial
+        ADD TESTIMONIAL
       </button>
 
       {showModal && (

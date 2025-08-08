@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { getTestimonials } from "../../redux/testimonials";
 import TestimonialCard from "../../components/TestimonialCard/TestimonialCard";
+import AddTestimonialModal from "../../components/AddTestimonialModal/AddTestimonialModal";
 import "./TestimonialsPage.css";
 
 const TestimonialsPage = () => {
@@ -18,6 +19,11 @@ const TestimonialsPage = () => {
   return (
     <div className="testimonials-page">
       <h1>Customer Testimonials</h1>
+
+      <div className="add-testimonial-container">
+        <AddTestimonialModal />
+      </div>
+
       <div className="testimonial-list">
         {testimonials.map((testimonial) => (
           <TestimonialCard key={testimonial.id} testimonial={testimonial} />

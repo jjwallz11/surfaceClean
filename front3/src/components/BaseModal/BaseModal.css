@@ -79,3 +79,15 @@
   color: #072460;
   font-weight: 600;
 }
+
+.star-select-row {
+  display: flex;
+  gap: 0.4rem;
+  margin: 0.5rem 0 0.75rem;
+}
+
+.star-icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}

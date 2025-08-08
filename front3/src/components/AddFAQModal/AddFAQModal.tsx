@@ -26,10 +26,11 @@ const AddFAQModal = () => {
 
   return (
     <>
+      {/* Use the shared .btn-add class so it matches Testimonials/Machines */}
       <button
         type="button"
         onClick={() => setShowModal(true)}
-        className="btn-edit add-faq-trigger"
+        className="btn-add"
       >
         ADD FAQ
       </button>
