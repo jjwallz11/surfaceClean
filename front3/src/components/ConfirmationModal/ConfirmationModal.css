@@ -27,27 +27,30 @@
 /* Modal Content */
 .modal-content {
   position: fixed !important;
-  background-color: #0457a0;
+  background-color: #FFE8D1; /* Cream */
   width: 300px;
   text-align: center;
-  color: #fff56c;
+  color: #072460; /* Patriotic Blue */
   font-weight: bold;
   border: 5px solid black;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
   z-index: 9999 !important;
+  border-radius: 10px;
 }
 
 /* Modal Header */
 .modal-header {
-  background-color: #ff4040;
+  background-color: #568EA3; /* Steel Blue */
   padding: 15px;
   font-size: 1.8rem;
-  color: #fff56c;
+  color: #FFFFFF; /* White */
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 /* Modal Message */
 .modal-message {
-  background-color: #0457a0;
+  background-color: #FFE8D1; /* Cream */
   padding: 20px;
   font-size: 1.2rem;
   border-bottom-left-radius: 10px;
@@ -62,10 +65,10 @@
   margin: 0 10px 20px 0;
 }
 
-/* Delete Button */
+/* Confirm Button */
 .confirm-btn {
-  background-color: #ff4040;
-  color: #fff56c;
+  background-color: #568EA3; /* Steel Blue */
+  color: #FFFFFF; /* White */
   font-size: 1.2rem;
   padding: 10px 20px;
   border-radius: 8px;
@@ -77,13 +80,13 @@
 
 .confirm-btn:hover {
   transform: scale(1.05);
-  background-color: #d63030;
+  background-color: #457486; /* Darker Steel Blue */
 }
 
 /* Cancel Button */
 .cancel-btn {
-  background-color: #c4c4c4;
-  color: black;
+  background-color: #AE2335; /* Patriotic Red */
+  color: #FFFFFF; /* White */
   font-size: 1.2rem;
   padding: 10px 20px;
   border-radius: 8px;
@@ -95,17 +98,18 @@
 
 .cancel-btn:hover {
   transform: scale(1.05);
-  background-color: #a0a0a0;
+  background-color: #B31942; /* Old Glory Red */
 }
 
+/* Input Fields */
 .password-input {
   padding: 10px;
   width: 80%;
   margin-top: 15px;
-  border: 2px solid #93e9be;
+  border: 2px solid #568EA3; /* Steel Blue */
   border-radius: 6px;
   font-size: 1rem;
-  background-color: #fff;
-  color: #0457a0;
+  background-color: #FFFFFF; /* White */
+  color: #072460; /* Patriotic Blue */
   font-weight: bold;
 }

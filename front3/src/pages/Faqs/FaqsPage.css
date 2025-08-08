@@ -18,3 +18,29 @@
   padding: 0;
   list-style: none;
 }
+
+.add-faq-container {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+  width: 30%;       /* match the button width */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.add-faq-btn {
+  width: 30%;
+  padding: 0.75rem 2rem;
+  background-color: #568EA3; /* Steel Blue */
+  color: #fff;
+  font-weight: bold;
+  font-size: 1rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center; /* ensure text is centered inside button */
+}
+
+.add-faq-btn:hover {
+  background-color: #0a3161; /* Old Glory Blue */
+}

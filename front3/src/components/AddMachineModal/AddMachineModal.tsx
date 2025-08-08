@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import * as machineActions from "../../redux/machines";
 import BaseModal from "../BaseModal/BaseModal";
+import "../BaseModal/BaseModal.css"
 
 const AddMachineModal = () => {
   const dispatch = useDispatch<any>();

@@ -1,7 +1,10 @@
+// front3/src/components/AddFAQModal/AddFAQModal.tsx
+
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import * as faqActions from "../../redux/faqs";
 import BaseModal from "../BaseModal/BaseModal";
+import "../BaseModal/BaseModal.css";
 
 const AddFAQModal = () => {
   const dispatch = useDispatch<any>();
@@ -23,8 +26,12 @@ const AddFAQModal = () => {
 
   return (
     <>
-      <button onClick={() => setShowModal(true)} className="btn-add">
-        Add FAQ
+      <button
+        type="button"
+        onClick={() => setShowModal(true)}
+        className="btn-edit add-faq-trigger"
+      >
+        ADD FAQ
       </button>
 
       {showModal && (

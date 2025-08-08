@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import * as testimonialActions from "../../redux/testimonials";
 import BaseModal from "../BaseModal/BaseModal";
-import "./AddTestimonialModal.css";
+import "../BaseModal/BaseModal.css"
 
 const AddTestimonialModal = () => {
   const dispatch = useDispatch<any>();

@@ -1,3 +1,4 @@
+// components/BaseModal/BaseModal.tsx
 import React from "react";
 import "./BaseModal.css";
 
@@ -9,27 +10,18 @@ interface BaseModalProps {
   children: React.ReactNode;
 }
 
-const BaseModal = ({
-  title,
-  onClose,
-  onSave,
-  showButtons = true,
-  children,
-}: BaseModalProps) => {
+const BaseModal = ({ title, onClose, onSave, showButtons = true, children }: BaseModalProps) => {
   return (
-    <div className="modal-overlay">
-      <div className="modal-container">
-        {title && <h2 className="modal-title">{title}</h2>}
-        <div className="modal-content">{children}</div>
+    <div className="base-modal__overlay">
+      <div className="base-modal__card">
+        {title && <div className="base-modal__header">{title}</div>}
+
+        <div className="base-modal__body">{children}</div>
 
         {showButtons && (
-          <div className="modal-buttons">
-            <button className="btn-edit" onClick={onSave}>
-              SAVE
-            </button>
-            <button className="btn-delete" onClick={onClose}>
-              CANCEL
-            </button>
+          <div className="base-modal__actions">
+            <button className="btn-edit" onClick={() => onSave?.()}>Save</button>
+            <button className="btn-delete" onClick={onClose}>Cancel</button>
           </div>
         )}
       </div>

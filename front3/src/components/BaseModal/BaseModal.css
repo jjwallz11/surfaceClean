@@ -1,66 +1,81 @@
-.modal-overlay {
+/* components/BaseModal/BaseModal.css */
+
+/* overlay */
+.base-modal__overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.3);
+  inset: 0;
+  background-color: rgba(0,0,0,0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 9999;
 }
 
-.modal-container {
-  background-color: #fff;
-  border: 2px solid #568EA3;
-  border-radius: 12px;
-  padding: 2rem;
+/* card */
+.base-modal__card {
   width: 90%;
   max-width: 500px;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: #FFE8D1;               /* Cream */
+  border: 5px solid #000;                   /* Black outline */
+  border-radius: 10px;
+  box-shadow: 4px 4px 10px rgba(0,0,0,0.3);
+  overflow: hidden;                         /* keeps header/body radii clean */
 }
 
-.modal-title {
-  font-size: 1.5rem;
-  color: #072460;
-  margin-bottom: 1rem;
+/* header (steel blue bar) */
+.base-modal__header {
+  background-color: #568EA3;                /* Steel Blue */
+  color: #FFFFFF;
+  font-size: 1.8rem;
+  font-weight: 700;
   text-align: center;
+  padding: 15px;
 }
 
-.modal-content {
-  margin-bottom: 1.5rem;
+/* body */
+.base-modal__body {
+  background-color: #FFE8D1;                /* Cream */
+  color: #072460;                           /* Patriotic Blue */
+  font-weight: 600;
+  padding: 20px;
 }
 
-.modal-buttons {
+/* actions row */
+.base-modal__actions {
   display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
+  justify-content: center;
+  gap: 15px;
+  padding: 0 20px 20px;
 }
 
+/* Reuse your shared button palette */
 .btn-edit,
 .btn-delete {
-  padding: 0.5rem 1rem;
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  border-radius: 8px;
   font-weight: bold;
   border: none;
-  border-radius: 0.25rem;
   cursor: pointer;
+  transition: transform 0.2s ease-in-out;
 }
 
-.btn-edit {
-  background-color: #568EA3;
-  color: #fff;
-}
+.btn-edit { background-color: #568EA3; color: #FFFFFF; }
+.btn-edit:hover { transform: scale(1.05); background-color: #457486; }
 
-.btn-edit:hover {
-  background-color: #0a3161;
-}
+.btn-delete { background-color: #AE2335; color: #FFFFFF; }
+.btn-delete:hover { transform: scale(1.05); background-color: #B31942; }
 
-.btn-delete {
-  background-color: #ae2335;
-  color: #fff;
-}
-
-.btn-delete:hover {
-  background-color: #b31942;
+/* Optional: inputs inside modal body */
+.base-modal__body input,
+.base-modal__body textarea {
+  width: 95%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 2px solid #568EA3;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #FFFFFF;
+  color: #072460;
+  font-weight: 600;
 }
