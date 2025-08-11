@@ -1,0 +1,97 @@
+/* front3/src/pages/MachineDetailsPage/MachineDetailsPage.css */
+
+.machine-details-page {
+  display: grid;
+  gap: 16px;
+}
+
+/* ---------- Carousel ---------- */
+.carousel {
+  position: relative;
+  width: 75%;
+  margin: 0 auto;
+  display: grid;
+  gap: 12px;
+}
+
+.carousel-image {
+  width: 100%;
+  max-height: 520px;
+  object-fit: contain; /* preserve full image in detail view */
+  border-radius: 8px;
+  background: #f7f7f7;
+}
+
+/* Prev / Next buttons */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background-color: #FFE8D1;
+  color: #568EA3;
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  user-select: none;
+}
+
+.carousel-btn.prev { left: 8px; }
+.carousel-btn.next { right: 8px; }
+
+.carousel-btn:hover { background: rgba(0, 0, 0, 0.65); }
+.carousel-btn:disabled { opacity: 0.4; cursor: default; }
+
+/* ---------- Grid of all images ---------- */
+.image-grid {
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.image-grid img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #f7f7f7;
+}
+
+/* ---------- Add Image row ---------- */
+.add-image-row {
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.add-image-hint { margin-bottom: 8px; }
+
+/* ---------- Back to Machines Button ---------- */
+
+.back-button {
+  background-color: #568EA3; /* steel blue */
+  color: #FFE8D1; /* cream */
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.back-button:hover {
+  background-color: #4b7c8e; /* slightly darker steel blue */
+  color: #fff3e8; /* lighter cream */
+}
+
+/* ---------- Small screen tweaks ---------- */
+@media (max-width: 480px) {
+  .carousel-image { max-height: 360px; }
+  .thumb img { width: 72px; height: 72px; }
+}

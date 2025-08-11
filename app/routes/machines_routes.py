@@ -10,6 +10,7 @@ from utils.csrf import verify_csrf
 from models.machines import Machine
 from schemas.machines import MachineCreate, MachineUpdate, MachineResponse
 from typing import List
+from services.machines_services import delete_machine as delete_machine_service
 
 router = APIRouter()
 
@@ -71,6 +72,7 @@ async def update_machine(
     await db.refresh(machine)
     return machine
 
+
 @router.delete("/{machine_id}")
 async def delete_machine(
     request: Request,
@@ -79,12 +81,9 @@ async def delete_machine(
     user=Depends(get_current_user)
 ):
     verify_csrf(request)
-    result = await db.execute(select(Machine).where(Machine.id == machine_id))
-    machine = result.scalar_one_or_none()
 
-    if not machine:
+    deleted = await delete_machine_service(db, machine_id)
+    if not deleted:
         raise HTTPException(status_code=404, detail="Machine not found")
 
-    await db.delete(machine)
-    await db.commit()
     return {"message": "Machine deleted"}
