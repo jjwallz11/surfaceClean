@@ -14,7 +14,6 @@ interface Machine {
   price: number;
   condition: string;
   hours_used: number;
-  image_url: string;
   created_at: string;
 }
 
@@ -34,7 +33,6 @@ const MachineCard = ({ machine }: MachineCardProps) => {
   const [price, setPrice] = useState(machine.price);
   const [condition, setCondition] = useState(machine.condition);
   const [hoursUsed, setHoursUsed] = useState(machine.hours_used);
-  const [imageUrl, setImageUrl] = useState(machine.image_url);
   const [showConfirm, setShowConfirm] = useState(false);
 
   useEffect(() => {
@@ -43,7 +41,6 @@ const MachineCard = ({ machine }: MachineCardProps) => {
       setPrice(updatedMachine.price);
       setCondition(updatedMachine.condition);
       setHoursUsed(updatedMachine.hours_used);
-      setImageUrl(updatedMachine.image_url);
     }
   }, [updatedMachine]);
 
@@ -53,8 +50,7 @@ const MachineCard = ({ machine }: MachineCardProps) => {
       (name !== machine.name ||
         price !== machine.price ||
         condition !== machine.condition ||
-        hoursUsed !== machine.hours_used ||
-        imageUrl !== machine.image_url)
+        hoursUsed !== machine.hours_used)
     ) {
       await dispatch(
         machineActions.editMachine(machine.id, {
@@ -62,7 +58,6 @@ const MachineCard = ({ machine }: MachineCardProps) => {
           price,
           condition,
           hours_used: hoursUsed,
-          image_url: imageUrl,
         })
       );
     }
@@ -107,12 +102,6 @@ const MachineCard = ({ machine }: MachineCardProps) => {
             onChange={(e) => setHoursUsed(Number(e.target.value))}
             placeholder="Hours Used"
           />
-          <input
-            className="machine-edit-input"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-            placeholder="Image URL"
-          />
         </div>
       ) : (
         <NavLink
@@ -123,7 +112,7 @@ const MachineCard = ({ machine }: MachineCardProps) => {
           <div className="machine-details">
             <h3 className="machine-name">{name}</h3>
             <div className="machine-image-container">
-              <img src={imageUrl} alt={name} className="machine-image" />
+              
             </div>
             <p className="machine-price">Price: ${price}</p>
             <p className="machine-condition">

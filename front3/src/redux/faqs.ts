@@ -78,7 +78,7 @@ export const deleteFaq = (id: number): DeleteFaqAction => ({
 // Get all FAQs (admin)
 export const getAllFaqs = () => async (dispatch: any) => {
   try {
-    const res = await csrfFetch('/api/faqs');
+    const res = await csrfFetch('/api/faqs/');
     const data = await res.json();
     dispatch(loadFaqs(data));
   } catch (e) {
@@ -101,7 +101,7 @@ export const getLiveFaqs = () => async (dispatch: any) => {
 
 // Create FAQ
 export const createFaq = (faqData: Partial<FAQ>) => async (dispatch: any) => {
-  const res = await csrfFetch('/api/faqs', {
+  const res = await csrfFetch('/api/faqs/', {
     method: 'POST',
     body: JSON.stringify(faqData),
   });

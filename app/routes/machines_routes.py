@@ -30,7 +30,7 @@ async def get_machine(
 
     return machine
 
-@router.post("/", response_model=MachineCreate)
+@router.post("/", response_model=MachineResponse)
 async def create_machine(
     request: Request,
     data: MachineCreate,

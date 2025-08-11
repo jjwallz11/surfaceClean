@@ -17,7 +17,7 @@ async def get_testimonials(db: AsyncSession = Depends(get_async_db)):
     result = await db.execute(select(Testimonial))
     return result.scalars().all()
 
-@router.post("/", response_model=TestimonialCreate)
+@router.post("/", response_model=TestimonialResponse)
 async def create_testimonial(
     request: Request,
     data: TestimonialCreate,

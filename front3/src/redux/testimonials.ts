@@ -82,7 +82,7 @@ import { setLoading } from "./session";
 
 export const getTestimonials = () => async (dispatch: any) => {
   try {
-    const res = await csrfFetch("/api/testimonials");
+    const res = await csrfFetch("/api/testimonials/");
     const data = await res.json();
 
     console.log("Fetched testimonials:", data);
@@ -98,7 +98,7 @@ export const getTestimonials = () => async (dispatch: any) => {
 export const createTestimonial = (
   testimonialData: Partial<Testimonial>
 ) => async (dispatch: any) => {
-  const res = await csrfFetch("/api/testimonials", {
+  const res = await csrfFetch("/api/testimonials/", {
     method: "POST",
     body: JSON.stringify(testimonialData),
   });

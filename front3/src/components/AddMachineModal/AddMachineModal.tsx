@@ -15,7 +15,7 @@ const AddMachineModal = () => {
   const [hoursUsed, setHoursUsed] = useState("");
   const [imageUrl, setImageUrl] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     dispatch(
       machineActions.createMachine({
         name,
@@ -23,9 +23,9 @@ const AddMachineModal = () => {
         condition,
         description,
         hours_used: parseInt(hoursUsed),
-        image_url: imageUrl,
       })
     );
+    await dispatch(machineActions.getMachines());
     setShowModal(false);
   };
 

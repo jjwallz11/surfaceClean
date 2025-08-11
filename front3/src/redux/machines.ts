@@ -9,7 +9,6 @@ interface Machine {
   condition: string;
   description: string;
   hours_used: number;
-  image_url: string;
   created_at: string;
 }
 
@@ -97,7 +96,7 @@ import { setLoading } from "./session";
 // Get all machines
 export const getMachines = () => async (dispatch: any) => {
   try {
-    const res = await csrfFetch("/api/machines");
+    const res = await csrfFetch("/api/machines/");
     const data = await res.json();
 
     console.log("Fetched machines:", data);
@@ -129,7 +128,7 @@ export const getMachineDetails =
 // Add machine
 export const createMachine =
   (machineData: Partial<Machine>) => async (dispatch: any) => {
-    const res = await csrfFetch("/api/machines", {
+    const res = await csrfFetch("/api/machines/", {
       method: "POST",
       body: JSON.stringify(machineData),
     });
@@ -137,6 +136,7 @@ export const createMachine =
     if (res.ok) {
       const newMachine = await res.json();
       dispatch(addMachine(newMachine));
+      console.log("Created machine:", newMachine);
     }
   };
 
@@ -144,6 +144,7 @@ export const createMachine =
 export const editMachine =
   (id: number, updates: Partial<Machine>) => async (dispatch: any) => {
     try {
+      console.log("Editing machine with id:", id);
       const res = await csrfFetch(`/api/machines/${id}`, {
         method: "PATCH",
         body: JSON.stringify(updates),

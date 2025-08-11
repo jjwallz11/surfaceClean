@@ -1,3 +1,5 @@
+// front3/src/components/TestimonialCard/TestimonialCard.tsx
+
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
@@ -68,7 +70,7 @@ const TestimonialCard = ({ testimonial }: TestimonialCardProps) => {
   };
 
   const confirmDelete = () => {
-    dispatch(testimonialActions.deleteTestimonial(testimonial.id));
+    dispatch(testimonialActions.removeTestimonial(testimonial.id));
     setShowConfirm(false);
   };
 

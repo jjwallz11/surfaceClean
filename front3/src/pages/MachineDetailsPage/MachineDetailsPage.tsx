@@ -26,7 +26,7 @@ const MachineDetailsPage = () => {
       <button onClick={() => navigate("/machines")}>Back to Machines</button>
       <h1>{machine.name}</h1>
       <img
-        src={machine.image_url || "/placeholder.jpg"}
+        
         alt={machine.name}
       />
       <p><strong>Condition:</strong> {machine.condition}</p>

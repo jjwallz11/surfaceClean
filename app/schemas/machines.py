@@ -11,7 +11,6 @@ class MachineBase(BaseModel):
     condition: Optional[str] = None
     description: Optional[str] = None
     hours_used: Optional[Decimal] = None
-    image_url: Optional[str] = None
 
 class MachineCreate(BaseModel):
     # required when creating
@@ -20,7 +19,6 @@ class MachineCreate(BaseModel):
     condition: str
     description: Optional[str] = None
     hours_used: Optional[Decimal] = None
-    image_url: Optional[str] = None
 
 class MachineUpdate(MachineBase):
     # all optional – inherits from MachineBase
@@ -33,7 +31,6 @@ class MachineResponse(BaseModel):
     condition: str
     description: Optional[str] = None
     hours_used: Optional[Decimal] = None
-    image_url: Optional[str] = None
 
     class Config:
         model_config = {"from_attributes": True}

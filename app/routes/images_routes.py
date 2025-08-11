@@ -18,7 +18,7 @@ async def get_images(db: AsyncSession = Depends(get_async_db)):
     result = await db.execute(select(Image))
     return result.scalars().all()
 
-@router.post("/", response_model=ImageCreate)
+@router.post("/", response_model=ImageResponse)
 async def create_image(
     request: Request,
     file: UploadFile = File(...),
@@ -40,7 +40,7 @@ async def create_image(
     await db.refresh(new_image)
     return new_image
 
-@router.patch("/{image_id}", response_model=ImageUpdate)
+@router.patch("/{image_id}", response_model=ImageResponse)
 async def update_image(
     request: Request,
     image_id: int,

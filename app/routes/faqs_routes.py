@@ -32,7 +32,7 @@ async def get_faqs(db: AsyncSession = Depends(get_async_db)):
     result = await db.execute(select(FAQ))
     return result.scalars().all()
 
-@router.post("/", response_model=FAQCreate)
+@router.post("/", response_model=FAQResponse)
 async def create_faq(
     request: Request,
     data: FAQCreate,
@@ -46,7 +46,7 @@ async def create_faq(
     await db.refresh(faq)
     return faq
 
-@router.patch("/{faq_id}", response_model=FAQUpdate)
+@router.patch("/{faq_id}", response_model=FAQResponse)
 async def update_faq(
     request: Request,
     faq_id: int,
