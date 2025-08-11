@@ -8,6 +8,12 @@ import { machineActions } from "../../redux";
 import ConfirmationModal from "../ConfirmationModal/ConfirmationModal";
 import "./MachineCard.css";
 
+interface Image {
+  id: number;
+  url: string;
+  description?: string;
+  machine_id: number;
+}
 interface Machine {
   id: number;
   name: string;
@@ -15,6 +21,7 @@ interface Machine {
   condition: string;
   hours_used: number;
   created_at: string;
+  images?: Image[];
 }
 
 interface MachineCardProps {
@@ -112,7 +119,13 @@ const MachineCard = ({ machine }: MachineCardProps) => {
           <div className="machine-details">
             <h3 className="machine-name">{name}</h3>
             <div className="machine-image-container">
-              
+              {(updatedMachine?.images ?? machine.images)?.[0]?.url && (
+                <img
+                  src={(updatedMachine?.images ?? machine.images)![0].url}
+                  alt={`${name} preview`}
+                  className="machine-thumb"
+                />
+              )}
             </div>
             <p className="machine-price">Price: ${price}</p>
             <p className="machine-condition">

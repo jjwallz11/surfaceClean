@@ -1,8 +1,9 @@
 # app/schemas/machines.py
 
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 from decimal import Decimal
+from .images import ImageResponse
 
 class MachineBase(BaseModel):
     # fields that can be patched
@@ -31,6 +32,7 @@ class MachineResponse(BaseModel):
     condition: str
     description: Optional[str] = None
     hours_used: Optional[Decimal] = None
+    images: List[ImageResponse] = []
 
     class Config:
         model_config = {"from_attributes": True}

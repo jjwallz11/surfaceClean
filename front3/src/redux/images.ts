@@ -80,21 +80,23 @@ export const getAllImages = () => async (dispatch: any) => {
     dispatch(loadImages(data.images));
   } catch (e) {
     console.error('Error loading images:', e);
+  } finally {
+    dispatch(setLoading(false));
   }
 };
 
-export const createImage = (formData: FormData) => async (dispatch: any) => {
-  try {
-    const res = await csrfFetch('/api/images/', {
-      method: 'POST',
-      body: formData,
-    });
-    const data = await res.json();
-    dispatch(addImage(data));
-  } catch (e) {
-    console.error('Error uploading image:', e);
-  }
+export const createImage = (form: FormData) => async (dispatch: any) => {
+  const res = await csrfFetch("/api/images/", {
+    method: "POST",
+    body: form,           // must be FormData with: file, description, machine_id
+    credentials: "include"
+  });
+  if (!res.ok) throw new Error("Image upload failed");
+  const data = await res.json();
+  dispatch(addImage(data));
+  return data;
 };
+
 
 export const editImage = (imageId: number, payload: Partial<Image>) => async (dispatch: any) => {
   try {

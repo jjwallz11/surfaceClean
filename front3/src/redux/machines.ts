@@ -1,7 +1,12 @@
 // redux/machines.ts
 
 /******************************* TYPES *******************************************/
-
+interface Image {
+  id: number;
+  url: string;
+  description?: string;
+  machine_id: number;
+}
 interface Machine {
   id: number;
   name: string;
@@ -10,6 +15,7 @@ interface Machine {
   description: string;
   hours_used: number;
   created_at: string;
+  images?: Image[];
 }
 
 interface MachinesState {
@@ -136,7 +142,7 @@ export const createMachine =
     if (res.ok) {
       const newMachine = await res.json();
       dispatch(addMachine(newMachine));
-      console.log("Created machine:", newMachine);
+      return newMachine;
     }
   };
 

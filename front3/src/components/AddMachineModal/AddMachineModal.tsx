@@ -1,6 +1,9 @@
+// front3/src/components/AddMachineModal/AddMachineModal.tsx
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import * as machineActions from "../../redux/machines";
+import * as imageActions from "../../redux/images";
+import ImageUploader from "../ImageUploader/ImageUploader";
 import BaseModal from "../BaseModal/BaseModal";
 import "../BaseModal/BaseModal.css";
 
@@ -13,10 +16,11 @@ const AddMachineModal = () => {
   const [condition, setCondition] = useState("");
   const [description, setDescription] = useState("");
   const [hoursUsed, setHoursUsed] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [files, setFiles] = useState<File[]>([]); // ⬅️ new
 
-  const handleSubmit = async() => {
-    dispatch(
+  const handleSubmit = async () => {
+    // 1️⃣ Create the machine first
+    const created = await dispatch(
       machineActions.createMachine({
         name,
         price: parseFloat(price),
@@ -25,13 +29,24 @@ const AddMachineModal = () => {
         hours_used: parseInt(hoursUsed),
       })
     );
+
+    // 2️⃣ If we have files, upload them
+    if (created?.id && files.length > 0) {
+      const form = new FormData();
+      form.append("file", files[0]);
+      form.append("machine_id", String(created.id));
+      form.append("description", ""); // required by backend
+
+      await dispatch(imageActions.createImage(form));
+    }
+
+    // 3️⃣ Refresh machines and close
     await dispatch(machineActions.getMachines());
     setShowModal(false);
   };
 
   return (
     <>
-      {/* match FAQ button sizing/styling */}
       <button onClick={() => setShowModal(true)} className="add-machine-btn">
         ADD MACHINE
       </button>
@@ -74,12 +89,9 @@ const AddMachineModal = () => {
             value={hoursUsed}
             onChange={(e) => setHoursUsed(e.target.value)}
           />
-          <input
-            className="modal-input"
-            placeholder="Image URL"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-          />
+
+          {/* ⬇️ replace Image URL input with the uploader */}
+          <ImageUploader onUpload={(fs) => setFiles(fs)} multiple />
         </BaseModal>
       )}
     </>

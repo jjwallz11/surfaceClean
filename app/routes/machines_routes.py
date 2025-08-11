@@ -3,6 +3,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Path, Body, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy.orm import selectinload
 from utils.db import get_async_db
 from .auth_routes import get_current_user
 from utils.csrf import verify_csrf
@@ -14,7 +15,8 @@ router = APIRouter()
 
 @router.get("/", response_model=List[MachineResponse])
 async def get_machines(db: AsyncSession = Depends(get_async_db)):
-    result = await db.execute(select(Machine))
+    result = await db.execute(
+        select(Machine).options(selectinload(Machine.images)))
     return result.scalars().all()
 
 @router.get("/{machine_id}", response_model=MachineResponse)
@@ -22,7 +24,10 @@ async def get_machine(
     machine_id: int = Path(..., gt=0),
     db: AsyncSession = Depends(get_async_db)
 ):
-    result = await db.execute(select(Machine).where(Machine.id == machine_id))
+    result = await db.execute(
+        select(Machine)
+        .options(selectinload(Machine.images))
+        .where(Machine.id == machine_id))
     machine = result.scalar_one_or_none()
 
     if not machine:
