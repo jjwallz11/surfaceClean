@@ -19,30 +19,49 @@ const AddMachineModal = () => {
   const [files, setFiles] = useState<File[]>([]); // ⬅️ new
 
   const handleSubmit = async () => {
-    // 1️⃣ Create the machine first
-    const created = await dispatch(
-      machineActions.createMachine({
-        name,
-        price: parseFloat(price),
-        condition,
-        description,
-        hours_used: parseInt(hoursUsed),
-      })
-    );
+    try {
+      // 1) create the machine
+      const created = await dispatch(
+        machineActions.createMachine({
+          name,
+          price: parseFloat(price),
+          condition,
+          description,
+          hours_used: parseInt(hoursUsed),
+        })
+      );
 
-    // 2️⃣ If we have files, upload them
-    if (created?.id && files.length > 0) {
-      const form = new FormData();
-      form.append("file", files[0]);
-      form.append("machine_id", String(created.id));
-      form.append("description", ""); // required by backend
+      // 2) show it immediately
+      await dispatch(machineActions.getMachines());
+      setShowModal(false); // close NOW for snappy UX
 
-      await dispatch(imageActions.createImage(form));
+      // 3) upload image in the background (don’t await)
+      if (created?.id && files.length > 0) {
+        (async () => {
+          try {
+            const form = new FormData();
+            form.append("file", files[0]);
+            form.append("machine_id", String(created.id));
+            form.append("description", "");
+            await dispatch(imageActions.createImage(form));
+            // optional: refresh just this machine’s details when upload finishes
+            await dispatch(machineActions.getMachineDetails(created.id));
+          } catch (e) {
+            console.warn("Image upload failed:", e);
+          }
+        })();
+      }
+    } catch (err) {
+      console.error("Create machine failed:", err);
+    } finally {
+      // reset fields
+      setName("");
+      setPrice("");
+      setCondition("");
+      setDescription("");
+      setHoursUsed("");
+      setFiles([]);
     }
-
-    // 3️⃣ Refresh machines and close
-    await dispatch(machineActions.getMachines());
-    setShowModal(false);
   };
 
   return (

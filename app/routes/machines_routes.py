@@ -17,7 +17,8 @@ router = APIRouter()
 @router.get("/", response_model=List[MachineResponse])
 async def get_machines(db: AsyncSession = Depends(get_async_db)):
     result = await db.execute(
-        select(Machine).options(selectinload(Machine.images)))
+        select(Machine).options(selectinload(Machine.images))
+    )
     return result.scalars().all()
 
 @router.get("/{machine_id}", response_model=MachineResponse)
@@ -28,12 +29,11 @@ async def get_machine(
     result = await db.execute(
         select(Machine)
         .options(selectinload(Machine.images))
-        .where(Machine.id == machine_id))
+        .where(Machine.id == machine_id)
+    )
     machine = result.scalar_one_or_none()
-
     if not machine:
         raise HTTPException(status_code=404, detail="Machine not found")
-
     return machine
 
 @router.post("/", response_model=MachineResponse)
@@ -47,10 +47,15 @@ async def create_machine(
     machine = Machine(**data.dict())
     db.add(machine)
     await db.commit()
-    await db.refresh(machine)
-    return machine
+    # Re-query with images eagerly loaded to avoid MissingGreenlet during serialization
+    result = await db.execute(
+        select(Machine)
+        .options(selectinload(Machine.images))
+        .where(Machine.id == machine.id)
+    )
+    return result.scalar_one()
 
-@router.patch("/{machine_id}", response_model=MachineUpdate)
+@router.patch("/{machine_id}", response_model=MachineResponse)
 async def update_machine(
     request: Request,
     machine_id: int = Path(..., gt=0),
@@ -61,7 +66,6 @@ async def update_machine(
     verify_csrf(request)
     result = await db.execute(select(Machine).where(Machine.id == machine_id))
     machine = result.scalar_one_or_none()
-
     if not machine:
         raise HTTPException(status_code=404, detail="Machine not found")
 
@@ -69,9 +73,13 @@ async def update_machine(
         setattr(machine, key, value)
 
     await db.commit()
-    await db.refresh(machine)
-    return machine
-
+    # Re-query with images eagerly loaded to avoid MissingGreenlet during serialization
+    result = await db.execute(
+        select(Machine)
+        .options(selectinload(Machine.images))
+        .where(Machine.id == machine_id)
+    )
+    return result.scalar_one()
 
 @router.delete("/{machine_id}")
 async def delete_machine(
@@ -81,9 +89,7 @@ async def delete_machine(
     user=Depends(get_current_user)
 ):
     verify_csrf(request)
-
     deleted = await delete_machine_service(db, machine_id)
     if not deleted:
         raise HTTPException(status_code=404, detail="Machine not found")
-
     return {"message": "Machine deleted"}

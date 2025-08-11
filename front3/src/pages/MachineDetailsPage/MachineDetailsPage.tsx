@@ -16,6 +16,7 @@ const MachineDetailsPage = () => {
   const { machineId } = useParams<{ machineId: string }>();
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
+  const user = useSelector((state: RootState) => state.session.user);
 
   const machine = useSelector(
     (state: RootState) => state.machines.single.details
@@ -131,15 +132,17 @@ const MachineDetailsPage = () => {
         </div>
       ) : null}
 
-      <div className="add-image-row">
-        <button onClick={() => setShowAddImage(true)} disabled={!canAddMore}>
-          {canAddMore
-            ? `Add Image (${currentCount}/${MAX_IMAGES})`
-            : "Max 10 images reached"}
-        </button>
-      </div>
+      {user && (
+        <div className="add-image-row">
+          <button onClick={() => setShowAddImage(true)} disabled={!canAddMore}>
+            {canAddMore
+              ? `Add Image (${currentCount}/${MAX_IMAGES})`
+              : "Max 10 images reached"}
+          </button>
+        </div>
+      )}
 
-      {showAddImage && (
+      {user && showAddImage && (
         <BaseModal
           title={`Add Images (${currentCount}/${MAX_IMAGES})`}
           onClose={() => {
