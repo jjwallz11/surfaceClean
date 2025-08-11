@@ -6,6 +6,7 @@ import { getAllFaqs, getLiveFaqs } from "../../redux/faqs";
 import FAQCard from "../../components/FAQCard/FAQCard";
 import AddFAQModal from "../../components/AddFAQModal/AddFAQModal";
 import "./FaqsPage.css";
+import CallNowButton from "../../components/CallNow/CallNow";
 
 const FAQsPage = () => {
   const dispatch = useDispatch<any>();
@@ -23,12 +24,8 @@ const FAQsPage = () => {
   return (
     <div className="faqs-page">
       <h1>Frequently Asked Questions</h1>
-
-      {user && (
-        <div className="add-faq-container">
-          <AddFAQModal />
-        </div>
-      )}
+      {!user && <CallNowButton />}
+      <div className="add-faq-container">{user && <AddFAQModal />}</div>
 
       <div className="faq-list">
         {faqs.length ? (

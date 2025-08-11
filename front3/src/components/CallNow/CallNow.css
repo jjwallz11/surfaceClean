@@ -1,0 +1,20 @@
+.call-now-btn {
+  background-color: #4682b4; /* Steel Blue */
+  color: #FFE8D1;
+  border: 5px solid #FFE8D1;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.call-now-btn:hover {
+  background-color: #3b6c94; /* Slightly darker Steel Blue */
+  transform: scale(1.05);
+}
+
+.call-now-btn:active {
+  transform: scale(0.98);
+}
