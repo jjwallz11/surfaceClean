@@ -142,7 +142,7 @@ const MachineCard = ({ machine }: MachineCardProps) => {
             {editing ? "Save" : "EDIT"}
           </button>
           <button onClick={handleDelete} className="btn-delete">
-            DELETE
+            SOLD
           </button>
         </div>
       )}
