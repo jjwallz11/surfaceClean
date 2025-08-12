@@ -1,4 +1,6 @@
 # app/main.py
+
+import os
 from fastapi import FastAPI
 from routes import router
 from config import settings
@@ -9,7 +11,8 @@ from seeds.cli import seed_all_async
 
 app = FastAPI(title="Surface Clean API", debug=settings.DEBUG)
 
-origins = ["https://yourdomain.com"] if settings.ENVIRONMENT == "production" else ["http://localhost:5173"]
+FRONTEND_ORIGIN = os.getenv("FRONTEND_ORIGIN", "http://localhost:5173")
+origins = [FRONTEND_ORIGIN]  # single allowed origin
 
 app.add_middleware(
     CORSMiddleware,
