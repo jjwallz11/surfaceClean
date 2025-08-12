@@ -16,11 +16,10 @@ const AddMachineModal = () => {
   const [condition, setCondition] = useState("");
   const [description, setDescription] = useState("");
   const [hoursUsed, setHoursUsed] = useState("");
-  const [files, setFiles] = useState<File[]>([]); // ⬅️ new
+  const [files, setFiles] = useState<File[]>([]);
 
   const handleSubmit = async () => {
     try {
-      // 1) create the machine
       const created = await dispatch(
         machineActions.createMachine({
           name,
@@ -31,11 +30,9 @@ const AddMachineModal = () => {
         })
       );
 
-      // 2) show it immediately
       await dispatch(machineActions.getMachines());
-      setShowModal(false); // close NOW for snappy UX
-
-      // 3) upload image in the background (don’t await)
+      setShowModal(false);
+      
       if (created?.id && files.length > 0) {
         (async () => {
           try {
@@ -44,7 +41,7 @@ const AddMachineModal = () => {
             form.append("machine_id", String(created.id));
             form.append("description", "");
             await dispatch(imageActions.createImage(form));
-            // optional: refresh just this machine’s details when upload finishes
+            
             await dispatch(machineActions.getMachineDetails(created.id));
           } catch (e) {
             console.warn("Image upload failed:", e);
@@ -54,7 +51,6 @@ const AddMachineModal = () => {
     } catch (err) {
       console.error("Create machine failed:", err);
     } finally {
-      // reset fields
       setName("");
       setPrice("");
       setCondition("");
