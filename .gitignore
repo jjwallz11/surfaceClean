@@ -9,6 +9,7 @@ __pycache__/
 BROWSER_TESTS.MD
 BACKEND_COMMANDS.MD
 PSQLCommand.MD
+docker-compose.yml
 
 # Python / FastAPI backend
 app/__pycache__/
