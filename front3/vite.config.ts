@@ -1,16 +1,17 @@
+// vite.config.ts
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// https://vitejs.dev/config/
-export default defineConfig(({mode}) => ({
-  plugins: [
-    react(),
-  ],
+export default defineConfig(({ mode }) => ({
+  plugins: [react()],
   assetsInclude: ["**/*.PNG"],
-  server: {
-    open: true,
-    proxy: {
-      "/api": "http://127.0.0.1:2911",
-    },
-  },
+  // Only proxy in development; in production we hit the real API URL.
+  server: mode === "development"
+    ? {
+        open: true,
+        proxy: {
+          "/api": "http://127.0.0.1:2911",
+        },
+      }
+    : undefined,
 }));

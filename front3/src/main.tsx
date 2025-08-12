@@ -27,6 +27,24 @@ declare global {
   }
 }
 
+if (import.meta.env.MODE === "production" && import.meta.env.VITE_API_BASE_URL) {
+  const base = String(import.meta.env.VITE_API_BASE_URL).replace(/\/$/, "");
+  const nativeFetch = window.fetch.bind(window);
+
+  window.fetch = (input: RequestInfo | URL, init?: RequestInit) => {
+    // String URL case
+    if (typeof input === "string" && input.startsWith("/api")) {
+      return nativeFetch(base + input, init);
+    }
+    // URL object case
+    if (input instanceof URL && input.pathname.startsWith("/api")) {
+      const url = base + input.pathname + input.search + input.hash;
+      return nativeFetch(url, init);
+    }
+    return nativeFetch(input as any, init);
+  };
+}
+
 const store = configureStore();
 
 if (import.meta.env.MODE !== "production") {
