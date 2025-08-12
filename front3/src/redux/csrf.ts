@@ -11,18 +11,21 @@ export async function csrfFetch(url: string, options: CsrfFetchOptions = {}) {
     ...options,
   };
 
-  // Normalize headers
   const headers = new Headers(opts.headers || {});
-  const isGet = (opts.method as string).toUpperCase() === "GET";
+  const method = (opts.method as string).toUpperCase();
+  const hasBody = !!opts.body;
+  const isFormData =
+    typeof FormData !== "undefined" && opts.body instanceof FormData;
 
-  if (!isGet) {
-    // Don't force JSON for FormData
-    const isFormData = typeof FormData !== "undefined" && opts.body instanceof FormData;
-    if (!isFormData && !headers.has("Content-Type")) {
+  // default accept
+  if (!headers.has("Accept")) headers.set("Accept", "application/json");
+
+  if (method !== "GET" && method !== "HEAD") {
+    // only set content-type when we're actually sending JSON
+    if (hasBody && !isFormData && !headers.has("Content-Type")) {
       headers.set("Content-Type", "application/json");
     }
-
-    // Be flexible on cookie name
+    // CSRF header from cookie
     const token =
       Cookies.get("csrf_token") ||
       Cookies.get("XSRF-TOKEN") ||
@@ -32,7 +35,10 @@ export async function csrfFetch(url: string, options: CsrfFetchOptions = {}) {
 
   opts.headers = headers;
 
-  const res = await window.fetch(url, opts);
+  const res = await fetch(url, opts);
+
+  // throw Response for 4xx/5xx so callers can handle
   if (res.status >= 400) throw res;
-  return res;
+
+  return res; // caller decides whether to res.json(), res.text(), etc.
 }
