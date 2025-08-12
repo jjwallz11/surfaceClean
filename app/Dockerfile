@@ -15,4 +15,5 @@ COPY . .
 
 EXPOSE 2911
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "2911"]
+# app/Dockerfile
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT}"]
