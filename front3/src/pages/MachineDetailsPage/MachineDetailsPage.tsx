@@ -134,7 +134,11 @@ const MachineDetailsPage = () => {
 
       {user && (
         <div className="add-image-row">
-          <button onClick={() => setShowAddImage(true)} disabled={!canAddMore}>
+          <button
+            className="btn-edit"
+            onClick={() => setShowAddImage(true)}
+            disabled={!canAddMore}
+          >
             {canAddMore
               ? `Add Image (${currentCount}/${MAX_IMAGES})`
               : "Max 10 images reached"}
