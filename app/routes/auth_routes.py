@@ -64,7 +64,7 @@ async def login(payload: LoginRequest, db: AsyncSession = Depends(get_async_db))
         key="access_token",
         value=access_token,
         httponly=True,
-        samesite="Lax",
+        samesite="none",
         secure=secure_cookie
     )
 
@@ -72,7 +72,7 @@ async def login(payload: LoginRequest, db: AsyncSession = Depends(get_async_db))
         key="csrf_token",
         value=csrf_token,
         httponly=False,
-        samesite="Lax",
+        samesite="none",
         secure=secure_cookie
     )
 
@@ -120,13 +120,13 @@ async def logout():
     response.delete_cookie(
         key="access_token",
         httponly=True,
-        samesite="Lax",
+        samesite="none",
         secure=secure_cookie
     )
     response.delete_cookie(
         key="csrf_token",
         httponly=False,
-        samesite="Lax",
+        samesite="none",
         secure=secure_cookie
     )
 
