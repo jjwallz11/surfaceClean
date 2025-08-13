@@ -68,7 +68,15 @@ const MachineCard = ({ machine }: MachineCardProps) => {
       >
         <div className="machine-details">
           <h3 className="machine-name">{name}</h3>
-          <div className="machine-image-container"></div>
+          <div className="machine-image-container">
+            {(updatedMachine?.images ?? machine.images)?.[0]?.url && (
+              <img
+                src={(updatedMachine?.images ?? machine.images)![0].url}
+                alt={`${name} preview`}
+                className="machine-thumb"
+              />
+            )}
+          </div>
           <p className="machine-price">Price: ${price}</p>
           <p className="machine-condition">
             <strong>Condition:</strong> {condition}
