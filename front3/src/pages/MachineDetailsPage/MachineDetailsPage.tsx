@@ -36,7 +36,6 @@ const MachineDetailsPage = () => {
   const hasImages = images.length > 0;
   const next = () => setCurrent((i) => (i + 1) % images.length);
   const prev = () => setCurrent((i) => (i - 1 + images.length) % images.length);
-  const jumpTo = (idx: number) => setCurrent(idx);
 
   if (!machine || !machine.id) return <div>Loading...</div>;
 
