@@ -171,3 +171,53 @@ async def reset_password(data: PasswordReset, db: AsyncSession = Depends(get_asy
 
     user.hashed_password = hash_password(data.new_password)
     await db.commit()
+    
+    
+# --- add near other imports ---
+from pydantic import BaseModel, field_validator
+
+class ChangePasswordRequest(BaseModel):
+    current_password: str
+    new_password: str
+
+    # simple server-side gate; keep it light and let frontend show confirm match
+    @field_validator("new_password")
+    @classmethod
+    def strong_enough(cls, v: str):
+        if len(v) < 8:
+            raise ValueError("Password must be at least 8 characters.")
+        return v
+
+@router.post("/session/change-password")
+async def change_password(
+    payload: ChangePasswordRequest,
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_async_db),
+    request: Request = None,   # present for CSRF verify if you want
+):
+    # If you require CSRF on POSTs, uncomment the next two lines:
+    from utils.csrf import verify_csrf
+    verify_csrf(request)
+
+    # 1) verify current
+    if not verify_password(payload.current_password, user.hashed_password):
+        raise HTTPException(status_code=400, detail="Current password is incorrect.")
+
+    # 2) disallow reusing the same password
+    if verify_password(payload.new_password, user.hashed_password):
+        raise HTTPException(status_code=400, detail="New password must be different.")
+
+    # 3) update
+    user.hashed_password = hash_password(payload.new_password)
+    await db.commit()
+
+    # (Optional) rotate cookies by issuing a new access token + csrf if you want
+    # access_token = create_access_token({"sub": user.email})
+    # csrf_token = generate_csrf_token()
+    # resp = JSONResponse(content={"message": "Password changed"})
+    # secure_cookie = settings.ENVIRONMENT == "production"
+    # resp.set_cookie("access_token", access_token, httponly=True, samesite="none", secure=secure_cookie)
+    # resp.set_cookie("csrf_token", csrf_token, httponly=False, samesite="none", secure=secure_cookie)
+    # return resp
+
+    return {"message": "Password changed"}

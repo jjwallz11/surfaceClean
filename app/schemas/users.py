@@ -9,7 +9,6 @@ class UserBase(BaseModel):
     last_name: Optional[str] = None
     company: Optional[str] = None
     phone: Optional[str] = None
-    role: str = "owner"
 
 class UserCreate(UserBase):
     password: str  # Plain text password (before hashing)
