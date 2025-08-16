@@ -89,7 +89,10 @@ const MachineDetailsPage = () => {
 
           <img
             key={images[current].id}
-            src={images[current].url}
+            src={images[current].url.replace(
+              "/upload/",
+              "/upload/f_auto,q_auto,w_800/"
+            )}
             alt={`${machine.name} image ${current + 1} of ${images.length}`}
             className="carousel-image"
             loading="lazy"
@@ -127,7 +130,7 @@ const MachineDetailsPage = () => {
           {images.map((img) => (
             <img
               key={img.id}
-              src={img.url}
+              src={img.url.replace("/upload/", "/upload/f_auto,q_auto,w_300/")}
               alt={`${machine.name} image ${img.id}`}
               loading="lazy"
             />
