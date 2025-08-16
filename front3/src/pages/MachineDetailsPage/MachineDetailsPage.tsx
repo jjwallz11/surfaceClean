@@ -92,6 +92,7 @@ const MachineDetailsPage = () => {
             src={images[current].url}
             alt={`${machine.name} image ${current + 1} of ${images.length}`}
             className="carousel-image"
+            loading="lazy"
           />
 
           <button
@@ -128,6 +129,7 @@ const MachineDetailsPage = () => {
               key={img.id}
               src={img.url}
               alt={`${machine.name} image ${img.id}`}
+              loading="lazy"
             />
           ))}
         </div>

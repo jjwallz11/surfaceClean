@@ -40,7 +40,13 @@ async def upload_image(file: Union[str, UploadFile], current_user_email: str, fo
         raise HTTPException(status_code=403, detail="Not authorized to upload images.")
 
     def _upload():
-        return cloudinary.uploader.upload(file, folder=folder)
+        return cloudinary.uploader.upload(
+            file,
+            folder=folder,
+            transformation=[
+                {"quality": "auto", "fetch_format": "auto"}
+            ]
+        )
 
     try:
         loop = asyncio.get_event_loop()
