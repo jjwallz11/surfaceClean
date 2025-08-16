@@ -111,3 +111,16 @@
   .carousel-image { max-height: 360px; }
   .thumb img { width: 72px; height: 72px; }
 }
+
+/* Row with Add + Delete buttons side-by-side */
+.actions-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+/* Ensure buttons don't stretch full width on this row */
+.actions-row .btn-edit,
+.actions-row .btn-delete {
+  flex: 0 0 auto;
+}

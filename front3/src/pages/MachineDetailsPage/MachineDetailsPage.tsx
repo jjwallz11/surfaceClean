@@ -8,6 +8,7 @@ import * as imagesActions from "../../redux/images";
 import { RootState } from "../../redux/store";
 import BaseModal from "../../components/BaseModal/BaseModal";
 import ImageUploader from "../../components/ImageUploader/ImageUploader";
+import DeleteImagesModal from "../../components/DeleteImagesModal/DeleteImagesModal";
 import "./MachineDetailsPage.css";
 
 const MAX_IMAGES = 10;
@@ -17,6 +18,7 @@ const MachineDetailsPage = () => {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.session.user);
+  const [showDelete, setShowDelete] = useState(false);
 
   const machine = useSelector(
     (state: RootState) => state.machines.single.details
@@ -132,7 +134,7 @@ const MachineDetailsPage = () => {
       ) : null}
 
       {user && (
-        <div className="add-image-row">
+        <div className="actions-row">
           <button
             className="btn-edit"
             onClick={() => setShowAddImage(true)}
@@ -141,6 +143,14 @@ const MachineDetailsPage = () => {
             {canAddMore
               ? `Add Image (${currentCount}/${MAX_IMAGES})`
               : "Max 10 images reached"}
+          </button>
+
+          <button
+            className="btn-delete"
+            onClick={() => setShowDelete(true)}
+            disabled={!images.length}
+          >
+            Delete Image
           </button>
         </div>
       )}
@@ -160,6 +170,18 @@ const MachineDetailsPage = () => {
           </p>
           <ImageUploader multiple onUpload={(fs) => setFiles(fs)} />
         </BaseModal>
+      )}
+
+      {user && showDelete && (
+        <DeleteImagesModal
+          open={showDelete}
+          onClose={() => setShowDelete(false)}
+          images={images}
+          machineId={machine.id}
+          onDeleted={async () => {
+            await dispatch(machineActions.getMachineDetails(machine.id));
+          }}
+        />
       )}
     </div>
   );
