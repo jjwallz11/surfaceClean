@@ -69,7 +69,7 @@ export default function DeleteImagesModal({
 
   return (
     <>
-      <BaseModal title="Delete Image(s)" onClose={onClose} onSave={handleSave}>
+      <BaseModal title="Delete Image(s)" onClose={onClose} showButtons={false}>
         <p style={{ marginBottom: 8 }}>Select one or more images to delete.</p>
 
         <div className="del-grid">
@@ -95,6 +95,14 @@ export default function DeleteImagesModal({
         </div>
 
         {busy && <p style={{ marginTop: 8 }}>Deleting…</p>}
+        <div className="base-modal__actions">
+          <button className="btn-delete" onClick={handleSave}>
+            Delete
+          </button>
+          <button className="btn-edit" onClick={onClose}>
+            Cancel
+          </button>
+        </div>
       </BaseModal>
 
       {confirm && (
