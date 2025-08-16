@@ -43,7 +43,7 @@ async def seed_all_async():
         typer.echo("Machines present — skipping.")
 
     if not await _has_rows(Image):
-        typer.echo("Seeding images…"); await seed_images()
+        typer.echo("NOT Seeding images…")
     else:
         typer.echo("Images present — skipping.")
 
