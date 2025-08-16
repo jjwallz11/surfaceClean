@@ -21,7 +21,6 @@
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
   max-height: 50%;
   overflow-y: auto;
-  overflow: hidden; /* keeps header/body radii clean */
 }
 
 /* header (steel blue bar) */
