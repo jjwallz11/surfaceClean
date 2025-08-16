@@ -11,26 +11,7 @@ async def seed_images():
         await conn.run_sync(Base.metadata.create_all)
 
     async with AsyncSessionLocal() as db:
-        images = [
-            Image(
-                url="https://example.com/machine1_img1.jpg",
-                machine_id=1,
-                description="Front view of refurbished Tennant T5",
-                public_id="1"
-            ),
-            Image(
-                url="https://example.com/machine1_img2.jpg",
-                machine_id=1,
-                description="Fails when NULL",
-                public_id="2"
-            ),
-            Image(
-                url="https://example.com/machine1_img1.jpg",
-                machine_id=1,
-                description="Replacement squeegee blade, fits T3 and T5",
-                public_id="3"
-            )
-        ]
+        images = []
 
         db.add_all(images)
         await db.commit()
