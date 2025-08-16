@@ -15,9 +15,9 @@ interface Image {
 interface Props {
   open: boolean;
   onClose: () => void;
-  images: Image[];          // thumbnails to render
-  machineId: number;        // for refresh callback up top
-  onDeleted?: () => void;   // parent can refresh details after delete
+  images: Image[]; // thumbnails to render
+  machineId: number; // for refresh callback up top
+  onDeleted?: () => void; // parent can refresh details after delete
 }
 
 export default function DeleteImagesModal({
@@ -32,7 +32,10 @@ export default function DeleteImagesModal({
   const [confirm, setConfirm] = useState(false);
   const [busy, setBusy] = useState(false);
 
-  const sorted = useMemo(() => images.slice().sort((a, b) => a.id - b.id), [images]);
+  const sorted = useMemo(
+    () => images.slice().sort((a, b) => a.id - b.id),
+    [images]
+  );
 
   if (!open) return null;
 
@@ -67,19 +70,26 @@ export default function DeleteImagesModal({
   return (
     <>
       <BaseModal title="Delete Image(s)" onClose={onClose} onSave={handleSave}>
-        <p style={{ marginBottom: 8 }}>
-          Select one or more images to delete.
-        </p>
+        <p style={{ marginBottom: 8 }}>Select one or more images to delete.</p>
 
         <div className="del-grid">
-          {sorted.map((img) => (
-            <label key={img.id} className={`del-cell ${picked.has(img.id) ? "picked" : ""}`}>
+          {sorted.map((img, idx) => (
+            <label
+              key={img.id}
+              className={`del-cell ${picked.has(img.id) ? "picked" : ""}`}
+            >
               <input
                 type="checkbox"
                 checked={picked.has(img.id)}
                 onChange={() => togglePick(img.id)}
               />
-              <img src={img.url} alt={`Image ${img.id}`} />
+              <img
+                src={img.url.replace(
+                  "/upload/",
+                  "/upload/f_auto,q_auto,w_200/"
+                )}
+                alt={`Image ${idx + 1}`}
+              />
             </label>
           ))}
         </div>
@@ -90,7 +100,9 @@ export default function DeleteImagesModal({
       {confirm && (
         <ConfirmationModal
           title="Confirm Deletion"
-          message={`Delete ${picked.size} image${picked.size === 1 ? "" : "s"}? This cannot be undone.`}
+          message={`Delete ${picked.size} image${
+            picked.size === 1 ? "" : "s"
+          }? This cannot be undone.`}
           onConfirm={handleConfirmDelete}
           onCancel={() => setConfirm(false)}
         />

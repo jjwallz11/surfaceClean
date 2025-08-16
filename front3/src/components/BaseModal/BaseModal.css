@@ -38,6 +38,8 @@
   color: #072460;                           /* Patriotic Blue */
   font-weight: 600;
   padding: 20px;
+  max-height: 33%;
+  overflow-y: auto;
 }
 
 /* actions row */
