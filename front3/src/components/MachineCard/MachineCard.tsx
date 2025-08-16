@@ -73,7 +73,7 @@ const MachineCard = ({ machine }: MachineCardProps) => {
               <img
                 src={(updatedMachine?.images ?? machine.images)![0].url}
                 alt={`${name} preview`}
-                className="machine-thumb"
+                className="machine-image"
               />
             )}
           </div>
