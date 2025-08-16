@@ -71,7 +71,7 @@ const MachineCard = ({ machine }: MachineCardProps) => {
           <div className="machine-image-container">
             {(updatedMachine?.images ?? machine.images)?.[0]?.url && (
               <img
-                src={(updatedMachine?.images ?? machine.images)![0].url}
+                src={(updatedMachine?.images ?? machine.images)![0].url.replace('/upload/', '/upload/q_auto,f_auto,w_600/')}
                 alt={`${name} preview`}
                 className="machine-image"
               />
