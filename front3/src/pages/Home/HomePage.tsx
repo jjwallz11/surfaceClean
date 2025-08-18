@@ -13,7 +13,7 @@ function HomePage() {
   const user = useSelector((state: RootState) => state.session.user);
 
   const links = [
-    { path: "/machines", label: "🧹 Machines" },
+    { path: "/machines", label: "🧹 Machines and Parts" },
     { path: "/testimonials", label: "⭐ Testimonials" },
     { path: "/faqs", label: "❓ FAQs" },
     { path: "/contact", label: "📞 Contact" },

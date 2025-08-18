@@ -72,7 +72,7 @@ const MachineDetailsPage = () => {
   return (
     <div className="machine-details-page">
       <button className="back-button" onClick={() => navigate("/machines")}>
-        Back to Machines
+        Back to Machines and Parts
       </button>
 
       <h1>{machine.name}</h1>
