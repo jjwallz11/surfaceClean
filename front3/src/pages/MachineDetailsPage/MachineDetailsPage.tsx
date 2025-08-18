@@ -116,7 +116,8 @@ const MachineDetailsPage = () => {
       </p>
       {machine.hours_used !== null && (
         <p>
-          <strong>Hours Used:</strong> {machine.hours_used}
+          <strong>Hours Used:</strong>{" "}
+          {parseInt(machine.hours_used.toString(), 10)} hrs
         </p>
       )}
       {machine.description && (

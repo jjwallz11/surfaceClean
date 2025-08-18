@@ -81,7 +81,7 @@ const MachineCard = ({ machine }: MachineCardProps) => {
           <p className="machine-condition">
             <strong>Condition:</strong> {condition}
           </p>
-          <p className="machine-hours">Hours Used: {hoursUsed}</p>
+          <p className="machine-hours">Hours Used: {parseInt(hoursUsed.toString(), 10)} hrs</p>
         </div>
       </NavLink>
 
