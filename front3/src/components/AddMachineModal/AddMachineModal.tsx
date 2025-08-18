@@ -63,12 +63,12 @@ const AddMachineModal = () => {
   return (
     <>
       <button onClick={() => setShowModal(true)} className="add-machine-btn">
-        ADD MACHINE
+        ADD MACHINE or PART
       </button>
 
       {showModal && (
         <BaseModal
-          title="Add Machine"
+          title="Add Machine or Part"
           onClose={() => setShowModal(false)}
           onSave={handleSubmit}
         >
@@ -105,7 +105,6 @@ const AddMachineModal = () => {
             onChange={(e) => setHoursUsed(e.target.value)}
           />
 
-          {/* ⬇️ replace Image URL input with the uploader */}
           <ImageUploader onUpload={(fs) => setFiles(fs)} multiple />
         </BaseModal>
       )}
