@@ -14,7 +14,7 @@ const MachinesPage = () => {
   const machines = useSelector((state: RootState) =>
     Object.values(state.machines.all)
   );
-  const user = useSelector((state: RootState) => state.session.user); // ⬅️ add this
+  const user = useSelector((state: RootState) => state.session.user);
 
   useEffect(() => {
     dispatch(machineActions.getMachines());
@@ -22,10 +22,10 @@ const MachinesPage = () => {
 
   return (
     <div className="machines-page">
-      <h1>Available Machines</h1>
+      <h1>Available Machines and Parts</h1>
       {!user && <CallNowButton />}
       <div className="add-machine-container">
-        {user && <AddMachineModal />}  {/* ⬅️ only show to logged-in users */}
+        {user && <AddMachineModal />}
       </div>
 
       <ul className="machine-list">
