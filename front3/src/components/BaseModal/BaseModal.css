@@ -105,3 +105,12 @@
   height: 24px;
   cursor: pointer;
 }
+
+.modal-error {
+  background-color: #ffe8e8;
+  color: #b31942;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}

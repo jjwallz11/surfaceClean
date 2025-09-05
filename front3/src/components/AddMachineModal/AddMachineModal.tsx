@@ -17,6 +17,7 @@ const AddMachineModal = () => {
   const [description, setDescription] = useState("");
   const [hoursUsed, setHoursUsed] = useState("");
   const [files, setFiles] = useState<File[]>([]);
+  const [modalError, setModalError] = useState<string | null>(null);
 
   const handleSubmit = async () => {
     try {
@@ -32,24 +33,36 @@ const AddMachineModal = () => {
 
       await dispatch(machineActions.getMachines());
       setShowModal(false);
-      
+
       if (created?.id && files.length > 0) {
         (async () => {
           try {
-            const form = new FormData();
-            form.append("file", files[0]);
-            form.append("machine_id", String(created.id));
-            form.append("description", "");
-            await dispatch(imageActions.createImage(form));
-            
+            await Promise.all(
+              files.map((file) => {
+                const form = new FormData();
+                form.append("file", file);
+                form.append("machine_id", String(created.id));
+                form.append("description", "");
+                return dispatch(imageActions.createImage(form)).catch((e) => {
+                  console.warn("Failed to upload image:", file.name, e);
+                  return null;
+                });
+              })
+            );
+
             await dispatch(machineActions.getMachineDetails(created.id));
           } catch (e) {
             console.warn("Image upload failed:", e);
           }
         })();
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error("Create machine failed:", err);
+      if (err?.response?.data?.detail) {
+        setModalError(`Machine creation failed: ${err.response.data.detail}`);
+      } else {
+        setModalError("Something went wrong while creating the machine.");
+      }
     } finally {
       setName("");
       setPrice("");
@@ -62,7 +75,13 @@ const AddMachineModal = () => {
 
   return (
     <>
-      <button onClick={() => setShowModal(true)} className="add-machine-btn">
+      <button
+        onClick={() => {
+          setModalError(null);
+          setShowModal(true);
+        }}
+        className="add-machine-btn"
+      >
         ADD MACHINE or PART
       </button>
 
@@ -72,6 +91,7 @@ const AddMachineModal = () => {
           onClose={() => setShowModal(false)}
           onSave={handleSubmit}
         >
+          {modalError && <div className="modal-error">{modalError}</div>}
           <input
             className="modal-input"
             placeholder="Name"
