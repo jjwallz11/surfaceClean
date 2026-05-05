@@ -16,6 +16,15 @@ const AddMachineModal = () => {
   const [condition, setCondition] = useState("");
   const [description, setDescription] = useState("");
   const [hoursUsed, setHoursUsed] = useState("");
+  const [seoTitle, setSeoTitle] = useState("");
+  const [seoDescription, setSeoDescription] = useState("");
+  const [bestFor, setBestFor] = useState("");
+  const [notFor, setNotFor] = useState("");
+  const [keyBenefits, setKeyBenefits] = useState("");
+  const [commonUses, setCommonUses] = useState("");
+  const [faq, setFaq] = useState("");
+  const [comparisonNotes, setComparisonNotes] = useState("");
+  const [slug, setSlug] = useState("");
   const [files, setFiles] = useState<File[]>([]);
   const [modalError, setModalError] = useState<string | null>(null);
 
@@ -28,7 +37,16 @@ const AddMachineModal = () => {
           condition,
           description,
           hours_used: parseInt(hoursUsed),
-        })
+          seo_title: seoTitle,
+          seo_description: seoDescription,
+          best_for: bestFor,
+          not_for: notFor,
+          key_benefits: keyBenefits,
+          common_uses: commonUses,
+          faq,
+          comparison_notes: comparisonNotes,
+          slug,
+        }),
       );
 
       await dispatch(machineActions.getMachines());
@@ -47,7 +65,7 @@ const AddMachineModal = () => {
                   console.warn("Failed to upload image:", file.name, e);
                   return null;
                 });
-              })
+              }),
             );
 
             await dispatch(machineActions.getMachineDetails(created.id));
@@ -70,6 +88,15 @@ const AddMachineModal = () => {
       setDescription("");
       setHoursUsed("");
       setFiles([]);
+      setSeoTitle("");
+      setSeoDescription("");
+      setBestFor("");
+      setNotFor("");
+      setKeyBenefits("");
+      setCommonUses("");
+      setFaq("");
+      setComparisonNotes("");
+      setSlug("");
     }
   };
 
@@ -123,6 +150,69 @@ const AddMachineModal = () => {
             type="number"
             value={hoursUsed}
             onChange={(e) => setHoursUsed(e.target.value)}
+          />
+
+          <input
+            className="modal-input"
+            placeholder="SEO Title"
+            value={seoTitle}
+            onChange={(e) => setSeoTitle(e.target.value)}
+          />
+
+          <textarea
+            className="modal-textarea"
+            placeholder="SEO Description"
+            value={seoDescription}
+            onChange={(e) => setSeoDescription(e.target.value)}
+          />
+
+          <textarea
+            className="modal-textarea"
+            placeholder="Best For"
+            value={bestFor}
+            onChange={(e) => setBestFor(e.target.value)}
+          />
+
+          <textarea
+            className="modal-textarea"
+            placeholder="Not Ideal For"
+            value={notFor}
+            onChange={(e) => setNotFor(e.target.value)}
+          />
+
+          <textarea
+            className="modal-textarea"
+            placeholder="Key Benefits"
+            value={keyBenefits}
+            onChange={(e) => setKeyBenefits(e.target.value)}
+          />
+
+          <textarea
+            className="modal-textarea"
+            placeholder="Common Uses"
+            value={commonUses}
+            onChange={(e) => setCommonUses(e.target.value)}
+          />
+
+          <textarea
+            className="modal-textarea"
+            placeholder="FAQ (Q: A: format)"
+            value={faq}
+            onChange={(e) => setFaq(e.target.value)}
+          />
+
+          <textarea
+            className="modal-textarea"
+            placeholder="Comparison Notes"
+            value={comparisonNotes}
+            onChange={(e) => setComparisonNotes(e.target.value)}
+          />
+
+          <input
+            className="modal-input"
+            placeholder="Slug (optional)"
+            value={slug}
+            onChange={(e) => setSlug(e.target.value)}
           />
 
           <ImageUploader onUpload={(fs) => setFiles(fs)} multiple />
