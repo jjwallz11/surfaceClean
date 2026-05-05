@@ -7,14 +7,25 @@ interface Image {
   description?: string;
   machine_id: number;
 }
+
 interface Machine {
   id: number;
   name: string;
   price: number;
   condition: string;
-  description: string;
-  hours_used: number;
-  created_at: string;
+  description?: string;
+  hours_used?: number;
+
+  seo_title?: string;
+  seo_description?: string;
+  best_for?: string;
+  not_for?: string;
+  key_benefits?: string;
+  common_uses?: string;
+  faq?: string;
+  comparison_notes?: string;
+  slug?: string;
+
   images?: Image[];
 }
 

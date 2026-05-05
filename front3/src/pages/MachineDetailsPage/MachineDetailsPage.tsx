@@ -21,7 +21,7 @@ const MachineDetailsPage = () => {
   const [showDelete, setShowDelete] = useState(false);
 
   const machine = useSelector(
-    (state: RootState) => state.machines.single.details
+    (state: RootState) => state.machines.single.details,
   );
 
   // Add Image modal state
@@ -61,7 +61,7 @@ const MachineDetailsPage = () => {
         form.append("machine_id", String(mid));
         form.append("description", "");
         return dispatch(imagesActions.createImage(form));
-      })
+      }),
     );
 
     await dispatch(machineActions.getMachineDetails(mid));
@@ -91,7 +91,7 @@ const MachineDetailsPage = () => {
             key={images[current].id}
             src={images[current].url.replace(
               "/upload/",
-              "/upload/f_auto,q_auto,w_800/"
+              "/upload/f_auto,q_auto,w_800/",
             )}
             alt={`${machine.name} image ${current + 1} of ${images.length}`}
             className="carousel-image"
@@ -114,7 +114,7 @@ const MachineDetailsPage = () => {
       <p>
         <strong>Price:</strong> ${machine.price}
       </p>
-      {machine.hours_used !== null && (
+      {machine.hours_used != null && (
         <p>
           <strong>Hours Used:</strong>{" "}
           {parseInt(machine.hours_used.toString(), 10)} hrs
@@ -123,6 +123,42 @@ const MachineDetailsPage = () => {
       {machine.description && (
         <p>
           <strong>Description:</strong> {machine.description}
+        </p>
+      )}
+
+      {machine.best_for && (
+        <p>
+          <strong>Best For:</strong> {machine.best_for}
+        </p>
+      )}
+
+      {machine.not_for && (
+        <p>
+          <strong>Not Ideal For:</strong> {machine.not_for}
+        </p>
+      )}
+
+      {machine.key_benefits && (
+        <p>
+          <strong>Key Benefits:</strong> {machine.key_benefits}
+        </p>
+      )}
+
+      {machine.common_uses && (
+        <p>
+          <strong>Common Uses:</strong> {machine.common_uses}
+        </p>
+      )}
+
+      {machine.faq && (
+        <p>
+          <strong>FAQ:</strong> {machine.faq}
+        </p>
+      )}
+
+      {machine.comparison_notes && (
+        <p>
+          <strong>Comparison:</strong> {machine.comparison_notes}
         </p>
       )}
 
