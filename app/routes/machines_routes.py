@@ -93,3 +93,11 @@ async def delete_machine(
     if not deleted:
         raise HTTPException(status_code=404, detail="Machine not found")
     return {"message": "Machine deleted"}
+
+from seeds.machines import seed_machines, undo_machines
+
+@router.post("/dev/reset-machines")
+async def reset_machines():
+    await undo_machines()
+    await seed_machines()
+    return {"message": "Machines reset"}
