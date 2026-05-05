@@ -9,6 +9,7 @@ import { RootState } from "../../redux/store";
 import BaseModal from "../../components/BaseModal/BaseModal";
 import ImageUploader from "../../components/ImageUploader/ImageUploader";
 import DeleteImagesModal from "../../components/DeleteImagesModal/DeleteImagesModal";
+import EditMachineModal from "../../components/EditMachineModal/EditMachineModal";
 import "./MachineDetailsPage.css";
 
 const MAX_IMAGES = 10;
@@ -18,6 +19,7 @@ const MachineDetailsPage = () => {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.session.user);
+  const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
 
   const machine = useSelector(
@@ -225,6 +227,10 @@ const MachineDetailsPage = () => {
           }}
         />
       )}
+
+      <button className="btn-edit" onClick={() => setShowEdit(true)}>
+        Edit Machine
+      </button>
     </div>
   );
 };
