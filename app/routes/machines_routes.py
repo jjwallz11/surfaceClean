@@ -11,6 +11,9 @@ from models.machines import Machine
 from schemas.machines import MachineCreate, MachineUpdate, MachineResponse
 from typing import List
 from services.machines_services import delete_machine as delete_machine_service
+from seeds.machines import seed_machines
+from sqlalchemy import text
+from utils.db import AsyncSessionLocal
 
 router = APIRouter()
 
@@ -96,8 +99,14 @@ async def delete_machine(
 
 from seeds.machines import seed_machines, undo_machines
 
+
 @router.post("/dev/reset-machines")
 async def reset_machines():
-    await undo_machines()
+    async with AsyncSessionLocal() as db:
+        await db.execute(text("DELETE FROM images"))
+        await db.execute(text("DELETE FROM machines"))
+        await db.commit()
+
     await seed_machines()
+
     return {"message": "Machines reset"}
